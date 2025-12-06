@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Check if admin is authenticated
 async function checkAuth() {
   try {
-    const response = await fetch(`${API_BASE}/admin/check-auth`);
+    const response = await fetch(`${API_BASE}/admin/check-auth`, {
+      credentials: 'include'  // Important: Send cookies with request
+    });
     const result = await response.json();
     
     if (result.success && result.isAuthenticated) {
@@ -62,6 +64,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',  // Important: Send cookies with request
       body: JSON.stringify({ email, password })
     });
     
@@ -87,7 +90,10 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 // Logout function
 async function logout() {
   try {
-    await fetch(`${API_BASE}/admin/logout`, { method: 'POST' });
+    await fetch(`${API_BASE}/admin/logout`, { 
+      method: 'POST',
+      credentials: 'include'  // Important: Send cookies with request
+    });
     showLoginPage();
     
     // Reset form
