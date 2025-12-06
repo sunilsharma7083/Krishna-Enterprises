@@ -1,5 +1,5 @@
 // Main App Controller - Single Page Application Logic
-const API_BASE = 'https://krishna-enterprises-9oup.onrender.com/api';
+// API_BASE is loaded from config.js
 let currentPage = 'home';
 
 // Initialize app on page load

@@ -1,6 +1,15 @@
 # ✅ Backend URL Updated to Render Deployment
 
-## 🔄 Changes Made:
+## � LATEST FIX (Dec 6, 2025):
+**Fixed "Identifier 'API_BASE' has already been declared" error**
+
+Created `/frontend/js/config.js` - single shared configuration file that all other scripts load from.
+
+**No more duplicate declarations!** See `API_BASE_FIX.md` for details.
+
+---
+
+## �🔄 Changes Made:
 
 ### Updated Backend URL From:
 ```

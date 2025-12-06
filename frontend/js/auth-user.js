@@ -1,5 +1,5 @@
 // User Authentication Management
-const API_BASE = 'https://krishna-enterprises-9oup.onrender.com/api';
+// API_BASE is loaded from config.js
 
 // Check authentication on page load
 document.addEventListener('DOMContentLoaded', async () => {
