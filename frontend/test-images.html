@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Test - Krishna Enterprises</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Image Loading Test</h1>
+    
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Test Results:</h2>
+      <div id="test-results" class="space-y-2"></div>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">Product Images Preview:</h2>
+      <div id="images-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    
+    async function testImages() {
+      const resultsDiv = document.getElementById('test-results');
+      const imagesGrid = document.getElementById('images-grid');
+      
+      resultsDiv.innerHTML = '<p class="text-gray-600"><i class="fas fa-spinner fa-spin mr-2"></i>Testing...</p>';
+      
+      try {
+        // Fetch all products
+        const response = await fetch(`${API_BASE}/products`);
+        const result = await response.json();
+        
+        if (result.success) {
+          const products = result.data;
+          
+          resultsDiv.innerHTML = `
+            <p class="text-green-600"><i class="fas fa-check-circle mr-2"></i>Successfully loaded ${products.length} products</p>
+            <p class="text-gray-600">Testing image accessibility...</p>
+          `;
+          
+          let loadedCount = 0;
+          let failedCount = 0;
+          let failedImages = [];
+          
+          // Test each product image
+          products.forEach((product, index) => {
+            const imageUrl = product.images && product.images.length > 0 ? product.images[0] : null;
+            
+            if (imageUrl) {
+              const img = new Image();
+              
+              img.onload = function() {
+                loadedCount++;
+                updateResults();
+              };
+              
+              img.onerror = function() {
+                failedCount++;
+                failedImages.push({ product: product.title, url: imageUrl });
+                updateResults();
+              };
+              
+              img.src = imageUrl;
+              
+              // Add to grid
+              imagesGrid.innerHTML += `
+                <div class="border rounded-lg p-4">
+                  <img src="${imageUrl}" 
+                       alt="${product.title}" 
+                       class="w-full h-48 object-cover rounded mb-2"
+                       onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=Failed+to+Load'; this.classList.add('opacity-50');">
+                  <p class="text-sm font-semibold">${product.title}</p>
+                  <p class="text-xs text-gray-500">${product.category}</p>
+                  ${product.featured ? '<span class="text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded">Featured</span>' : ''}
+                </div>
+              `;
+            } else {
+              failedCount++;
+              failedImages.push({ product: product.title, url: 'No image' });
+              
+              imagesGrid.innerHTML += `
+                <div class="border rounded-lg p-4 bg-gray-50">
+                  <div class="w-full h-48 bg-gray-200 rounded mb-2 flex items-center justify-center">
+                    <i class="fas fa-image text-4xl text-gray-400"></i>
+                  </div>
+                  <p class="text-sm font-semibold">${product.title}</p>
+                  <p class="text-xs text-red-500">No image available</p>
+                </div>
+              `;
+            }
+          });
+          
+          function updateResults() {
+            const total = products.length;
+            const tested = loadedCount + failedCount;
+            
+            let html = `
+              <p class="text-green-600"><i class="fas fa-check-circle mr-2"></i>Products Loaded: ${products.length}</p>
+              <p class="text-blue-600"><i class="fas fa-image mr-2"></i>Images Tested: ${tested}/${total}</p>
+              <p class="text-green-600"><i class="fas fa-check mr-2"></i>Successful: ${loadedCount}</p>
+              ${failedCount > 0 ? `<p class="text-red-600"><i class="fas fa-times mr-2"></i>Failed: ${failedCount}</p>` : ''}
+            `;
+            
+            if (failedImages.length > 0) {
+              html += '<div class="mt-4 p-3 bg-red-50 border border-red-200 rounded"><p class="font-semibold text-red-800 mb-2">Failed Images:</p><ul class="text-sm text-red-600 space-y-1">';
+              failedImages.forEach(item => {
+                html += `<li>• ${item.product}: ${item.url}</li>`;
+              });
+              html += '</ul></div>';
+            }
+            
+            if (tested === total) {
+              html += `<div class="mt-4 p-3 bg-green-50 border border-green-200 rounded"><p class="text-green-800 font-semibold"><i class="fas fa-check-circle mr-2"></i>Test Complete!</p></div>`;
+            }
+            
+            resultsDiv.innerHTML = html;
+          }
+          
+          updateResults();
+        } else {
+          resultsDiv.innerHTML = `<p class="text-red-600"><i class="fas fa-exclamation-circle mr-2"></i>Failed to load products: ${result.message}</p>`;
+        }
+      } catch (error) {
+        resultsDiv.innerHTML = `<p class="text-red-600"><i class="fas fa-exclamation-circle mr-2"></i>Error: ${error.message}</p>`;
+      }
+    }
+    
+    // Run test on page load
+    testImages();
+  </script>
+</body>
+</html>

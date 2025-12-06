@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Krishna Enterprises - Premium Trophies, Awards, and Custom Recognition Products in Jaipur, Rajasthan">
+  <meta name="keywords" content="trophies, awards, medals, corporate awards, sports trophies, custom trophies, Jaipur, Rajasthan">
+  <meta name="author" content="Yogesh Sharma - Krishna Enterprises">
+  <title>Krishna Enterprises - Premium Trophies & Awards</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              50: '#FFFBEB',
+              100: '#FEF3C7',
+              200: '#FDE68A',
+              300: '#FCD34D',
+              400: '#FBBF24',
+              500: '#F59E0B',
+              600: '#D97706',
+              700: '#B45309',
+              800: '#92400E',
+              900: '#78350F',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Custom styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #0f172a 100%);
+    }
+    
+    .gold-gradient {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    }
+    
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 30px;
+      right: 30px;
+      background-color: #25D366;
+      color: #FFF;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 0.375rem;
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #F59E0B;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Hide scrollbar for mobile menu */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  
+  <!-- Navigation -->
+  <nav id="navbar" class="bg-gray-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
+            <i class="fas fa-trophy text-white text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-yellow-400">Krishna Enterprises</h1>
+            <p class="text-xs text-gray-400">Premium Trophies & Awards</p>
+          </div>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="#home" class="nav-link hover:text-yellow-400 transition">Home</a>
+          <a href="#products" class="nav-link hover:text-yellow-400 transition">Products</a>
+          <a href="#about" class="nav-link hover:text-yellow-400 transition">About</a>
+          <a href="#contact" class="nav-link hover:text-yellow-400 transition">Contact</a>
+          <button onclick="viewCart()" class="relative hover:text-yellow-400 transition">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+          </button>
+          <div id="auth-buttons">
+            <button onclick="showLoginModal()" class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg transition text-gray-900 font-semibold">
+              <i class="fas fa-user mr-2"></i>Login
+            </button>
+          </div>
+          <div id="user-menu" class="hidden relative">
+            <button onclick="toggleUserDropdown()" class="flex items-center space-x-2 bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg transition text-gray-900 font-semibold">
+              <i class="fas fa-user-circle text-xl"></i>
+              <span id="user-name-desktop">User</span>
+              <i class="fas fa-chevron-down text-sm"></i>
+            </button>
+            <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+              <a href="#" onclick="viewProfile(); return false;" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-user mr-2"></i>My Profile
+              </a>
+              <a href="#" onclick="viewMyOrders(); return false;" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-box mr-2"></i>My Orders
+              </a>
+              <hr class="my-2">
+              <a href="#" onclick="userLogout(); return false;" class="block px-4 py-2 text-red-600 hover:bg-gray-100">
+                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden text-2xl">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="md:hidden hidden pb-4">
+        <a href="#home" class="block py-2 hover:text-yellow-400 transition">Home</a>
+        <a href="#products" class="block py-2 hover:text-yellow-400 transition">Products</a>
+        <a href="#about" class="block py-2 hover:text-yellow-400 transition">About</a>
+        <a href="#contact" class="block py-2 hover:text-yellow-400 transition">Contact</a>
+        <button onclick="viewCart()" class="block py-2 hover:text-yellow-400 transition text-left">
+          Cart <span id="cart-badge-mobile" class="badge bg-red-500 text-white ml-2 hidden">0</span>
+        </button>
+        <div id="mobile-auth-buttons">
+          <button onclick="showLoginModal()" class="block py-2 text-yellow-400">Login / Sign Up</button>
+        </div>
+        <div id="mobile-user-menu" class="hidden">
+          <a href="#" onclick="viewProfile(); return false;" class="block py-2 text-yellow-400">My Profile</a>
+          <a href="#" onclick="viewMyOrders(); return false;" class="block py-2 text-yellow-400">My Orders</a>
+          <button onclick="userLogout()" class="block py-2 text-red-400">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area (SPA) -->
+  <div id="app-content">
+    <!-- Content will be loaded dynamically here -->
+  </div>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/919782070381?text=Hello%20Krishna%20Enterprises%2C%20I%20want%20to%20inquire%20about%20your%20trophies" 
+     class="whatsapp-float" 
+     target="_blank"
+     aria-label="Contact us on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Login/Signup Modal -->
+  <div id="auth-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-md w-full p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900" id="auth-modal-title">Login</h2>
+        <button onclick="closeAuthModal()" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times text-2xl"></i>
+        </button>
+      </div>
+      
+      <!-- Login Form -->
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Email</label>
+          <input type="email" id="login-email" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                 placeholder="Enter your email">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Password</label>
+          <input type="password" id="login-password" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                 placeholder="Enter your password">
+        </div>
+        <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 rounded-lg transition">
+          <i class="fas fa-sign-in-alt mr-2"></i>Login
+        </button>
+        <p class="text-center text-gray-600">
+          Don't have an account? 
+          <button type="button" onclick="switchToSignup()" class="text-yellow-600 hover:text-yellow-700 font-semibold">Sign Up</button>
+        </p>
+      </form>
+      
+      <!-- Signup Form -->
+      <form id="signup-form" class="space-y-4 hidden">
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Full Name</label>
+          <input type="text" id="signup-name" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                 placeholder="Enter your full name">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Email</label>
+          <input type="email" id="signup-email" required
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                 placeholder="Enter your email">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Phone (Optional)</label>
+          <input type="tel" id="signup-phone"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                 placeholder="10-digit mobile number">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Password</label>
+          <input type="password" id="signup-password" required minlength="6"
+                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                 placeholder="Minimum 6 characters">
+        </div>
+        <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 rounded-lg transition">
+          <i class="fas fa-user-plus mr-2"></i>Sign Up
+        </button>
+        <p class="text-center text-gray-600">
+          Already have an account? 
+          <button type="button" onclick="switchToLogin()" class="text-yellow-600 hover:text-yellow-700 font-semibold">Login</button>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 mt-16">
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Company Info -->
+        <div>
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
+              <i class="fas fa-trophy text-white"></i>
+            </div>
+            <h3 class="text-xl font-bold text-yellow-400">Krishna Enterprises</h3>
+          </div>
+          <p class="text-sm text-gray-400 mb-4">Your trusted partner for premium trophies, awards, and custom recognition products in Jaipur.</p>
+          <p class="text-sm"><strong>Owner:</strong> Yogesh Sharma</p>
+        </div>
+        
+        <!-- Contact Info -->
+        <div>
+          <h3 class="text-lg font-semibold text-yellow-400 mb-4">Contact Us</h3>
+          <div class="space-y-3 text-sm">
+            <p class="flex items-start">
+              <i class="fas fa-map-marker-alt text-yellow-400 mt-1 mr-3"></i>
+              <span>A-90, Shri Govind Nagar 1st Extension,<br>Niwaru Road, Jhotwara,<br>Jaipur, Rajasthan 302013, India</span>
+            </p>
+            <p class="flex items-center">
+              <i class="fas fa-phone text-yellow-400 mr-3"></i>
+              <span>
+                <a href="tel:+919782070381" class="hover:text-yellow-400 transition block">+91 9782070381</a>
+                <a href="tel:+917014881124" class="hover:text-yellow-400 transition block">+91 7014881124</a>
+              </span>
+            </p>
+            <p class="flex items-center">
+              <i class="fas fa-envelope text-yellow-400 mr-3"></i>
+              <a href="mailto:sales@krishnaenterprises.info" class="hover:text-yellow-400 transition">sales@krishnaenterprises.info</a>
+            </p>
+            <p class="flex items-center">
+              <i class="fab fa-whatsapp text-yellow-400 mr-3"></i>
+              <a href="https://wa.me/919782070381" target="_blank" class="hover:text-yellow-400 transition">WhatsApp Us</a>
+            </p>
+          </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div>
+          <h3 class="text-lg font-semibold text-yellow-400 mb-4">Quick Links</h3>
+          <div class="space-y-2 text-sm">
+            <a href="#home" class="block hover:text-yellow-400 transition">Home</a>
+            <a href="#products" class="block hover:text-yellow-400 transition">Products</a>
+            <a href="#categories" class="block hover:text-yellow-400 transition">Categories</a>
+            <a href="#about" class="block hover:text-yellow-400 transition">About Us</a>
+            <a href="#contact" class="block hover:text-yellow-400 transition">Contact</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-6 text-center text-sm">
+        <p>&copy; 2025 Krishna Enterprises. All rights reserved. | Designed for Excellence</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/auth-user.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/products.js"></script>
+  <script src="/js/orders.js"></script>
+</body>
+</html>
