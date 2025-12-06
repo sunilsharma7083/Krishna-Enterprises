@@ -9,7 +9,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: true,
+  origin: [
+    'http://localhost:3000',
+    'https://krishna-enterprises-theta.vercel.app',
+    'https://krishna-enterprises-9oup.onrender.com'
+  ],
   credentials: true
 }));
 app.use(express.json());
@@ -23,7 +27,8 @@ app.use(session({
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // Required for cross-origin cookies
   }
 }));
 
