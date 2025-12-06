@@ -180,10 +180,101 @@ function loadHomePage() {
         </div>
       </div>
     </section>
+
+    <!-- Customer Reviews Section -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Customer Reviews</h2>
+          <p class="text-xl text-gray-600 mb-6">Share your experience with us</p>
+          <div class="w-24 h-1 bg-yellow-400 mx-auto"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+          <!-- Review Form -->
+          <div class="bg-gray-50 rounded-lg shadow-lg p-8 mb-12">
+            <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+              <i class="fas fa-star text-yellow-500 mr-3"></i>
+              Write a Review
+            </h3>
+            
+            <form id="review-form" class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-gray-700 font-semibold mb-2">Your Name *</label>
+                  <input type="text" 
+                         id="review-name" 
+                         required
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                         placeholder="Enter your name">
+                </div>
+                <div>
+                  <label class="block text-gray-700 font-semibold mb-2">Email (Optional)</label>
+                  <input type="email" 
+                         id="review-email"
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                         placeholder="your@email.com">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Rating *</label>
+                <div class="flex items-center space-x-2">
+                  <div id="star-rating" class="flex space-x-1">
+                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="1"></i>
+                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="2"></i>
+                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="3"></i>
+                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="4"></i>
+                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="5"></i>
+                  </div>
+                  <span id="rating-text" class="text-gray-600 font-semibold ml-4">Select rating</span>
+                </div>
+                <input type="hidden" id="review-rating" required>
+              </div>
+
+              <div>
+                <label class="block text-gray-700 font-semibold mb-2">Your Review *</label>
+                <textarea id="review-message" 
+                          required
+                          rows="5"
+                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                          placeholder="Tell us about your experience with Krishna Enterprises..."></textarea>
+              </div>
+
+              <div id="review-success" class="hidden bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center">
+                <i class="fas fa-check-circle mr-2 text-xl"></i>
+                <span>Thank you for your review! It will be visible after approval.</span>
+              </div>
+
+              <div id="review-error" class="hidden bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-center">
+                <i class="fas fa-exclamation-circle mr-2 text-xl"></i>
+                <span id="review-error-message">Something went wrong. Please try again.</span>
+              </div>
+
+              <button type="submit" 
+                      class="w-full gold-gradient text-gray-900 font-bold py-4 rounded-lg hover:shadow-xl transition transform hover:scale-105">
+                <i class="fas fa-paper-plane mr-2"></i>Submit Review
+              </button>
+            </form>
+          </div>
+
+          <!-- Recent Reviews Display -->
+          <div id="reviews-list" class="space-y-6">
+            <!-- Reviews will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </section>
   `;
   
   // Load categories
   loadHomeCategories();
+  
+  // Setup review form
+  setupReviewForm();
+  
+  // Load reviews
+  loadReviews();
   
   window.scrollTo(0, 0);
 }
@@ -852,4 +943,203 @@ function showLoading(containerId) {
 // Format currency
 function formatCurrency(amount) {
   return `₹${parseFloat(amount).toLocaleString('en-IN')}`;
+}
+
+// Setup Review Form
+function setupReviewForm() {
+  let selectedRating = 0;
+  
+  // Star rating interaction
+  const stars = document.querySelectorAll('#star-rating i');
+  const ratingInput = document.getElementById('review-rating');
+  const ratingText = document.getElementById('rating-text');
+  
+  if (!stars.length) return;
+  
+  stars.forEach(star => {
+    star.addEventListener('click', function() {
+      selectedRating = parseInt(this.getAttribute('data-rating'));
+      ratingInput.value = selectedRating;
+      updateStars(selectedRating);
+      
+      const ratingLabels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
+      ratingText.textContent = ratingLabels[selectedRating - 1];
+    });
+    
+    star.addEventListener('mouseenter', function() {
+      const rating = parseInt(this.getAttribute('data-rating'));
+      updateStars(rating);
+    });
+  });
+  
+  const starRatingDiv = document.getElementById('star-rating');
+  if (starRatingDiv) {
+    starRatingDiv.addEventListener('mouseleave', function() {
+      updateStars(selectedRating);
+    });
+  }
+  
+  function updateStars(rating) {
+    stars.forEach((star, index) => {
+      if (index < rating) {
+        star.classList.remove('text-gray-300');
+        star.classList.add('text-yellow-400');
+      } else {
+        star.classList.remove('text-yellow-400');
+        star.classList.add('text-gray-300');
+      }
+    });
+  }
+  
+  // Handle review form submission
+  const reviewForm = document.getElementById('review-form');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('review-name').value.trim();
+      const email = document.getElementById('review-email').value.trim();
+      const rating = ratingInput.value;
+      const message = document.getElementById('review-message').value.trim();
+      
+      if (!rating) {
+        showReviewError('Please select a rating');
+        return;
+      }
+      
+      const submitButton = reviewForm.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Submitting...';
+      
+      try {
+        const response = await fetch(`${API_BASE}/reviews`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({ name, email, rating: parseInt(rating), message })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showReviewSuccess();
+          reviewForm.reset();
+          selectedRating = 0;
+          updateStars(0);
+          ratingText.textContent = 'Select rating';
+          ratingInput.value = '';
+          
+          // Reload reviews
+          setTimeout(() => loadReviews(), 1000);
+        } else {
+          showReviewError(result.message || 'Failed to submit review');
+        }
+      } catch (error) {
+        console.error('Review submission error:', error);
+        showReviewError('Network error. Please try again.');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Submit Review';
+      }
+    });
+  }
+}
+
+function showReviewSuccess() {
+  const successDiv = document.getElementById('review-success');
+  const errorDiv = document.getElementById('review-error');
+  if (errorDiv) errorDiv.classList.add('hidden');
+  if (successDiv) {
+    successDiv.classList.remove('hidden');
+    setTimeout(() => successDiv.classList.add('hidden'), 5000);
+  }
+}
+
+function showReviewError(message) {
+  const errorDiv = document.getElementById('review-error');
+  const errorMessage = document.getElementById('review-error-message');
+  const successDiv = document.getElementById('review-success');
+  if (successDiv) successDiv.classList.add('hidden');
+  if (errorDiv && errorMessage) {
+    errorMessage.textContent = message;
+    errorDiv.classList.remove('hidden');
+    setTimeout(() => errorDiv.classList.add('hidden'), 5000);
+  }
+}
+
+// Load Reviews
+async function loadReviews() {
+  try {
+    const response = await fetch(`${API_BASE}/reviews`);
+    const result = await response.json();
+    const reviews = result.data || result.reviews || [];
+    
+    const reviewsList = document.getElementById('reviews-list');
+    if (!reviewsList) return;
+    
+    if (reviews.length === 0) {
+      reviewsList.innerHTML = `
+        <div class="text-center py-12 bg-gray-50 rounded-lg">
+          <i class="fas fa-comments text-6xl text-gray-300 mb-4"></i>
+          <p class="text-xl text-gray-500">No reviews yet. Be the first to review!</p>
+        </div>
+      `;
+      return;
+    }
+    
+    reviewsList.innerHTML = `
+      <div class="mb-6">
+        <h3 class="text-2xl font-bold text-gray-900">Recent Reviews (${reviews.length})</h3>
+      </div>
+      ${reviews.map(review => `
+        <div class="bg-gray-50 rounded-lg p-6 shadow hover:shadow-lg transition">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                <i class="fas fa-user text-white text-xl"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-900">${escapeHtml(review.name)}</h4>
+                <div class="flex items-center space-x-2">
+                  <div class="flex">
+                    ${Array.from({length: 5}, (_, i) => `
+                      <i class="fas fa-star ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'} text-sm"></i>
+                    `).join('')}
+                  </div>
+                  <span class="text-sm text-gray-500">
+                    ${new Date(review.createdAt).toLocaleDateString('en-IN', { 
+                      year: 'numeric', 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-700 leading-relaxed">${escapeHtml(review.message)}</p>
+        </div>
+      `).join('')}
+    `;
+  } catch (error) {
+    console.error('Error loading reviews:', error);
+    const reviewsList = document.getElementById('reviews-list');
+    if (reviewsList) {
+      reviewsList.innerHTML = `
+        <div class="text-center py-12 bg-red-50 rounded-lg">
+          <i class="fas fa-exclamation-triangle text-4xl text-red-300 mb-4"></i>
+          <p class="text-gray-600">Error loading reviews</p>
+        </div>
+      `;
+    }
+  }
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }

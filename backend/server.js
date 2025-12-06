@@ -49,6 +49,7 @@ const orderRoutes = require('./routes/orders');
 const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/categories');
+const reviewRoutes = require('./routes/reviews');
 
 // API Routes
 app.use('/api/products', productRoutes);
@@ -56,6 +57,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Hidden Admin Portal Route (not linked from main website)
 app.get('/admin-portal-ke2025', (req, res) => {
