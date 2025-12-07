@@ -9,7 +9,9 @@ async function loadDashboard() {
   
   try {
     // Fetch dashboard statistics
-    const response = await fetch(`${API_BASE}/orders/stats/dashboard`);
+    const response = await fetch(`${API_BASE}/orders/stats/dashboard`, {
+      credentials: 'include'
+    });
     const result = await response.json();
     
     if (!result.success) {
@@ -19,7 +21,9 @@ async function loadDashboard() {
     const stats = result.data;
     
     // Fetch recent orders
-    const ordersResponse = await fetch(`${API_BASE}/orders?limit=5`);
+    const ordersResponse = await fetch(`${API_BASE}/orders?limit=5`, {
+      credentials: 'include'
+    });
     const ordersResult = await ordersResponse.json();
     const recentOrders = ordersResult.success ? ordersResult.data.slice(0, 5) : [];
     

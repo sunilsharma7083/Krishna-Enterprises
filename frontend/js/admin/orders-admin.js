@@ -67,7 +67,9 @@ async function loadOrdersList(status = 'all') {
   
   try {
     const url = status !== 'all' ? `${API_BASE}/orders?status=${status}` : `${API_BASE}/orders`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      credentials: 'include'
+    });
     const result = await response.json();
     
     if (result.success) {
@@ -330,7 +332,9 @@ async function exportOrdersToCSV() {
   try {
     showToast('Generating CSV file...', 'info');
     
-    const response = await fetch(`${API_BASE}/orders/export/csv`);
+    const response = await fetch(`${API_BASE}/orders/export/csv`, {
+      credentials: 'include'
+    });
     
     if (response.ok) {
       // Get filename from Content-Disposition header if available

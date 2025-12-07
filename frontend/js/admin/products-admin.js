@@ -122,7 +122,9 @@ async function loadProductsList() {
   const listContainer = document.getElementById('products-list');
   
   try {
-    const response = await fetch(`${API_BASE}/products`);
+    const response = await fetch(`${API_BASE}/products`, {
+      credentials: 'include'
+    });
     const result = await response.json();
     
     if (result.success) {
