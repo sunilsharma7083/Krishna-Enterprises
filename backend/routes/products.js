@@ -26,14 +26,24 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
+    console.log('📸 File upload attempt:', {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size
+    });
+    
     const allowedTypes = /jpeg|jpg|png|gif|webp/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
     
+    console.log('🔍 Validation:', { extname, mimetype });
+    
     if (mimetype && extname) {
+      console.log('✅ File accepted');
       return cb(null, true);
     } else {
-      cb(new Error('Only image files are allowed!'));
+      console.log('❌ File rejected - Only image files allowed');
+      cb(new Error('Only image files (JPEG, JPG, PNG, GIF, WEBP) are allowed!'));
     }
   }
 });

@@ -78,9 +78,12 @@ async function loadProducts() {
             
             <div>
               <label class="block text-gray-700 font-semibold mb-2">Product Images</label>
-              <input type="file" id="product-images" accept="image/*" multiple
+              <input type="file" id="product-images" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,.jpeg,.jpg,.png,.gif,.webp" multiple
                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <p class="text-sm text-gray-500 mt-2">You can select multiple images (max 5 images, 5MB each)</p>
+              <p class="text-sm text-gray-500 mt-2">
+                <i class="fas fa-info-circle text-blue-500"></i>
+                Supported formats: JPEG, JPG, PNG, GIF, WEBP (max 5 images, 5MB each)
+              </p>
               <div id="existing-images" class="mt-4 grid grid-cols-4 gap-2"></div>
             </div>
             
@@ -287,6 +290,8 @@ async function handleProductSubmit(e) {
   }
   
   try {
+    console.log('📤 Uploading product with', imageFiles.length, 'images');
+    
     const url = editingProductId ? `${API_BASE}/products/${editingProductId}` : `${API_BASE}/products`;
     const method = editingProductId ? 'PUT' : 'POST';
     
@@ -296,20 +301,25 @@ async function handleProductSubmit(e) {
       credentials: 'include'
     });
     
+    console.log('📡 Response status:', response.status);
+    
     const result = await response.json();
+    console.log('📦 Response data:', result);
     
     if (result.success) {
-      showToast(result.message || 'Product saved successfully', 'success');
+      console.log('✅ Product saved successfully');
+      showToast(result.message || 'Product saved successfully! Images will appear shortly.', 'success');
       closeProductModal();
       await loadProductsList();
     } else {
-      showToast(result.message || 'Failed to save product', 'error');
+      console.error('❌ Save failed:', result.message);
+      showToast(result.message || 'Failed to save product. Please check image format (JPEG, JPG, PNG, GIF, WEBP)', 'error');
       submitButton.disabled = false;
       submitButton.innerHTML = originalButtonText;
     }
   } catch (error) {
-    console.error('Error saving product:', error);
-    showToast('Failed to save product', 'error');
+    console.error('❌ Error saving product:', error);
+    showToast('Failed to save product. Please check console for details.', 'error');
     submitButton.disabled = false;
     submitButton.innerHTML = originalButtonText;
   }
