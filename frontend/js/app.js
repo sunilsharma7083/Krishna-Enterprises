@@ -58,12 +58,12 @@ function toggleMobileMenu() {
   const menuBtn = document.getElementById('mobile-menu-btn');
   
   if (mobileMenu) {
-    const isHidden = mobileMenu.classList.contains('hidden');
+    const isHidden = mobileMenu.style.display === 'none' || !mobileMenu.style.display;
     
     if (isHidden) {
-      mobileMenu.classList.remove('hidden');
+      mobileMenu.style.display = 'block';
     } else {
-      mobileMenu.classList.add('hidden');
+      mobileMenu.style.display = 'none';
     }
     
     // Toggle icon
@@ -86,7 +86,7 @@ function closeMobileMenu() {
   const menuBtn = document.getElementById('mobile-menu-btn');
   
   if (mobileMenu) {
-    mobileMenu.classList.add('hidden');
+    mobileMenu.style.display = 'none';
   }
   
   if (menuBtn) {
@@ -129,7 +129,7 @@ function setupMobileMenu() {
       const isClickInsideMenu = mobileMenu.contains(e.target);
       const isClickOnButton = newMenuBtn.contains(e.target);
       
-      if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains('hidden')) {
+      if (!isClickInsideMenu && !isClickOnButton && mobileMenu.style.display === 'block') {
         closeMobileMenu();
       }
     });
