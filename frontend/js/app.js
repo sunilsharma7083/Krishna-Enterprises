@@ -52,6 +52,14 @@ function handleHashChange() {
   }
 }
 
+// Global function to toggle mobile menu
+function toggleMobileMenu() {
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenu) {
+    mobileMenu.classList.toggle('hidden');
+  }
+}
+
 // Setup mobile menu toggle
 function setupMobileMenu() {
   const menuBtn = document.getElementById('mobile-menu-btn');
@@ -60,13 +68,27 @@ function setupMobileMenu() {
   if (menuBtn && mobileMenu) {
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
+      // Toggle icon between bars and times
+      const icon = menuBtn.querySelector('i');
+      if (icon) {
+        if (mobileMenu.classList.contains('hidden')) {
+          icon.className = 'fas fa-bars';
+        } else {
+          icon.className = 'fas fa-times';
+        }
+      }
     });
     
     // Close menu when clicking on a link
-    const menuLinks = mobileMenu.querySelectorAll('a, button');
+    const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
     menuLinks.forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
+        // Reset icon to bars
+        const icon = menuBtn.querySelector('i');
+        if (icon) {
+          icon.className = 'fas fa-bars';
+        }
       });
     });
   }
@@ -468,8 +490,13 @@ async function loadHomeFeaturedProducts() {
       return;
     }
     
-    // Show first 4 products as featured
-    const featuredProducts = allProducts.slice(0, 4);
+    // Prioritize products with images, then show remaining products
+    const productsWithImages = allProducts.filter(p => p.images && p.images.length > 0);
+    const productsWithoutImages = allProducts.filter(p => !p.images || p.images.length === 0);
+    const sortedProducts = [...productsWithImages, ...productsWithoutImages];
+    
+    // Show first 4 products
+    const featuredProducts = sortedProducts.slice(0, 4);
     
     grid.innerHTML = featuredProducts.map(product => `
       <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group">
