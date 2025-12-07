@@ -475,12 +475,12 @@ async function loadHomeFeaturedProducts() {
       <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group">
         <div class="aspect-square bg-gradient-to-br from-yellow-50 to-gray-50 flex items-center justify-center p-2 md:p-3">
           ${product.images && product.images.length > 0 
-            ? `<img src="${product.images[0]}" alt="${product.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-300" />`
+            ? `<img src="${product.images[0]}" alt="${product.title || product.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-300" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=Trophy'" />`
             : `<i class="fas fa-trophy text-yellow-400 text-3xl md:text-4xl opacity-50"></i>`
           }
         </div>
         <div class="p-2 md:p-3">
-          <h4 class="font-bold text-sm md:text-base text-gray-900 mb-1 line-clamp-1">${product.name}</h4>
+          <h4 class="font-bold text-sm md:text-base text-gray-900 mb-1 line-clamp-1">${product.title || product.name}</h4>
           <p class="text-xs text-gray-600 mb-1.5 md:mb-2 line-clamp-1">${product.description || 'Premium quality product'}</p>
           <div class="flex justify-between items-center">
             <span class="text-yellow-600 font-bold text-xs md:text-sm">₹${product.price?.toLocaleString('en-IN') || 'N/A'}</span>
