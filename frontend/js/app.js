@@ -55,8 +55,45 @@ function handleHashChange() {
 // Global function to toggle mobile menu
 function toggleMobileMenu() {
   const mobileMenu = document.getElementById('mobile-menu');
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  
   if (mobileMenu) {
-    mobileMenu.classList.toggle('hidden');
+    const isHidden = mobileMenu.classList.contains('hidden');
+    
+    if (isHidden) {
+      mobileMenu.classList.remove('hidden');
+    } else {
+      mobileMenu.classList.add('hidden');
+    }
+    
+    // Toggle icon
+    if (menuBtn) {
+      const icon = menuBtn.querySelector('i');
+      if (icon) {
+        if (isHidden) {
+          icon.className = 'fas fa-times';
+        } else {
+          icon.className = 'fas fa-bars';
+        }
+      }
+    }
+  }
+}
+
+// Close mobile menu
+function closeMobileMenu() {
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  
+  if (mobileMenu) {
+    mobileMenu.classList.add('hidden');
+  }
+  
+  if (menuBtn) {
+    const icon = menuBtn.querySelector('i');
+    if (icon) {
+      icon.className = 'fas fa-bars';
+    }
   }
 }
 
@@ -66,50 +103,34 @@ function setupMobileMenu() {
   const mobileMenu = document.getElementById('mobile-menu');
   
   if (menuBtn && mobileMenu) {
-    // Toggle menu on button click
-    menuBtn.addEventListener('click', (e) => {
+    // Remove any existing listeners by cloning
+    const newMenuBtn = menuBtn.cloneNode(true);
+    menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+    
+    newMenuBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const isHidden = mobileMenu.classList.contains('hidden');
-      mobileMenu.classList.toggle('hidden');
-      
-      // Toggle icon between bars and times
-      const icon = menuBtn.querySelector('i');
-      if (icon) {
-        if (isHidden) {
-          icon.className = 'fas fa-times';
-        } else {
-          icon.className = 'fas fa-bars';
-        }
-      }
+      toggleMobileMenu();
     });
     
-    // Close menu when clicking on any link in mobile menu (event delegation)
-    mobileMenu.addEventListener('click', (e) => {
-      // Check if clicked element is a link or inside a link
-      const link = e.target.closest('a, button');
-      if (link) {
-        // Small delay to allow navigation to happen
+    // Close menu when clicking on a link
+    const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Let the hash navigation happen, then close menu
         setTimeout(() => {
-          mobileMenu.classList.add('hidden');
-          const icon = menuBtn.querySelector('i');
-          if (icon) {
-            icon.className = 'fas fa-bars';
-          }
+          closeMobileMenu();
         }, 100);
-      }
+      });
     });
     
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-      if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-        if (!mobileMenu.classList.contains('hidden')) {
-          mobileMenu.classList.add('hidden');
-          const icon = menuBtn.querySelector('i');
-          if (icon) {
-            icon.className = 'fas fa-bars';
-          }
-        }
+      const isClickInsideMenu = mobileMenu.contains(e.target);
+      const isClickOnButton = newMenuBtn.contains(e.target);
+      
+      if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains('hidden')) {
+        closeMobileMenu();
       }
     });
   }
