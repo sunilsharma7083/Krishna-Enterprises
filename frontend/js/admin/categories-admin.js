@@ -7,7 +7,7 @@ async function fetchCategoriesData() {
     try {
         console.log('Fetching categories data...');
         showLoading();
-        const response = await fetch('https://krishna-enterprises-9oup.onrender.com/api/categories/all', {
+        const response = await fetch(`${API_BASE}/categories/all`, {
             credentials: 'include'
         });
         
@@ -137,8 +137,8 @@ async function saveCategory(event) {
         };
         
         const url = editingCategoryId 
-            ? `https://krishna-enterprises-9oup.onrender.com/api/categories/${editingCategoryId}`
-            : 'https://krishna-enterprises-9oup.onrender.com/api/categories';
+            ? `${API_BASE}/categories/${editingCategoryId}`
+            : `${API_BASE}/categories`;
         
         const method = editingCategoryId ? 'PUT' : 'POST';
         
@@ -177,7 +177,7 @@ async function deleteCategory(categoryId) {
     try {
         showLoading();
         
-        const response = await fetch(`https://krishna-enterprises-9oup.onrender.com/api/categories/${categoryId}`, {
+        const response = await fetch(`${API_BASE}/categories/${categoryId}`, {
             method: 'DELETE',
             credentials: 'include'
         });
