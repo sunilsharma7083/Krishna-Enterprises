@@ -54,16 +54,26 @@ function handleHashChange() {
 
 // Global function to toggle mobile menu
 function toggleMobileMenu() {
+  console.log('🔄 Toggle mobile menu called');
   const mobileMenu = document.getElementById('mobile-menu');
   const menuBtn = document.getElementById('mobile-menu-btn');
   
+  console.log('📱 Mobile Menu element:', mobileMenu);
+  console.log('🔘 Menu Button element:', menuBtn);
+  
   if (mobileMenu) {
-    const isHidden = mobileMenu.style.display === 'none' || !mobileMenu.style.display;
+    const currentDisplay = mobileMenu.style.display;
+    const isHidden = currentDisplay === 'none' || !currentDisplay;
+    
+    console.log('📊 Current display:', currentDisplay);
+    console.log('🔍 Is hidden:', isHidden);
     
     if (isHidden) {
       mobileMenu.style.display = 'block';
+      console.log('✅ Menu opened - display set to block');
     } else {
       mobileMenu.style.display = 'none';
+      console.log('✅ Menu closed - display set to none');
     }
     
     // Toggle icon
@@ -72,11 +82,15 @@ function toggleMobileMenu() {
       if (icon) {
         if (isHidden) {
           icon.className = 'fas fa-times';
+          console.log('🔄 Icon changed to X');
         } else {
           icon.className = 'fas fa-bars';
+          console.log('🔄 Icon changed to hamburger');
         }
       }
     }
+  } else {
+    console.error('❌ Mobile menu element not found!');
   }
 }
 
@@ -99,24 +113,36 @@ function closeMobileMenu() {
 
 // Setup mobile menu toggle
 function setupMobileMenu() {
+  console.log('🔧 Setting up mobile menu...');
   const menuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   
+  console.log('📱 Menu Button:', menuBtn);
+  console.log('📱 Mobile Menu:', mobileMenu);
+  
   if (menuBtn && mobileMenu) {
-    // Remove any existing listeners by cloning
-    const newMenuBtn = menuBtn.cloneNode(true);
-    menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
-    
-    newMenuBtn.addEventListener('click', (e) => {
+    // Direct event listener without cloning
+    menuBtn.onclick = function(e) {
       e.preventDefault();
       e.stopPropagation();
+      console.log('🔘 Menu button clicked!');
       toggleMobileMenu();
-    });
+    };
+    
+    // Also add touch event for mobile devices
+    menuBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      console.log('👆 Menu button touched!');
+      toggleMobileMenu();
+    }, { passive: false });
     
     // Close menu when clicking on a link
     const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+    console.log('📋 Found', menuLinks.length, 'menu links');
+    
     menuLinks.forEach(link => {
       link.addEventListener('click', (e) => {
+        console.log('🔗 Link clicked:', link.textContent);
         // Let the hash navigation happen, then close menu
         setTimeout(() => {
           closeMobileMenu();
@@ -126,13 +152,19 @@ function setupMobileMenu() {
     
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
+      const menuBtnElement = document.getElementById('mobile-menu-btn');
       const isClickInsideMenu = mobileMenu.contains(e.target);
-      const isClickOnButton = newMenuBtn.contains(e.target);
+      const isClickOnButton = menuBtnElement && menuBtnElement.contains(e.target);
       
       if (!isClickInsideMenu && !isClickOnButton && mobileMenu.style.display === 'block') {
+        console.log('🚪 Closing menu - clicked outside');
         closeMobileMenu();
       }
     });
+    
+    console.log('✅ Mobile menu setup complete');
+  } else {
+    console.error('❌ Mobile menu elements not found!');
   }
 }
 
