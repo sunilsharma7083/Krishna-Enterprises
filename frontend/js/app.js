@@ -585,7 +585,9 @@ async function loadHomeFeaturedProducts() {
           <h4 class="font-bold text-sm md:text-base text-gray-900 mb-1 line-clamp-1">${product.title || product.name}</h4>
           <p class="text-xs text-gray-600 mb-1.5 md:mb-2 line-clamp-1">${product.description || 'Premium quality product'}</p>
           <div class="flex justify-between items-center">
-            <span class="text-yellow-600 font-bold text-xs md:text-sm">₹${product.price?.toLocaleString('en-IN') || 'N/A'}</span>
+            <span class="text-green-600 font-semibold text-xs md:text-sm flex items-center">
+              <i class="fas fa-boxes mr-1"></i> Available in Bulk
+            </span>
             <a href="#products" class="text-yellow-600 hover:text-yellow-700 text-xs font-semibold inline-flex items-center">
               View <i class="fas fa-arrow-right ml-1 text-xs"></i>
             </a>

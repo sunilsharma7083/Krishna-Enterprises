@@ -72,7 +72,9 @@ function displayProducts(products) {
         </div>
         
         <div class="flex items-center justify-between mb-3">
-          <span class="text-2xl font-bold text-yellow-600">${formatCurrency(product.price)}</span>
+          <span class="text-lg font-semibold text-green-600 flex items-center">
+            <i class="fas fa-boxes mr-2"></i> Available in Bulk
+          </span>
           <button onclick="event.stopPropagation(); addToCartQuick('${product._id}')" 
                   class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition shadow-md hover:shadow-lg"
                   ${!product.inStock ? 'disabled' : ''}>
@@ -137,11 +139,11 @@ async function loadProductDetail(productId) {
     
     // Generate WhatsApp message
     const whatsappMessage = encodeURIComponent(
-      `Hello Krishna Enterprises, I want to order:\n\n` +
+      `Hello Krishna Enterprises, I'm interested in:\n\n` +
       `Product: ${product.title}\n` +
       `Category: ${product.category}\n` +
-      `Price: ₹${product.price}\n\n` +
-      `Please confirm availability and delivery details.`
+      `Quantity: Bulk Order\n\n` +
+      `Please share pricing details and delivery information.`
     );
     
     content.innerHTML = `
@@ -188,7 +190,14 @@ async function loadProductDetail(productId) {
                 <h1 class="text-4xl font-bold text-gray-900 mb-4">${product.title}</h1>
                 
                 <div class="mb-6">
-                  <span class="text-4xl font-bold text-yellow-600">${formatCurrency(product.price)}</span>
+                  <div class="inline-flex items-center bg-green-50 border-2 border-green-500 px-6 py-3 rounded-lg">
+                    <i class="fas fa-boxes text-green-600 text-2xl mr-3"></i>
+                    <span class="text-2xl font-bold text-green-600">Available in Bulk</span>
+                  </div>
+                  <p class="text-sm text-gray-600 mt-2">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Contact us for bulk orders and pricing
+                  </p>
                 </div>
                 
                 <div class="mb-6">
