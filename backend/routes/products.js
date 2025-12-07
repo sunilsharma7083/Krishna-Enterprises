@@ -99,6 +99,9 @@ router.post('/', upload.array('images', 5), async (req, res) => {
     
     // Get uploaded image paths
     const images = req.files ? req.files.map(file => `/uploads/products/${file.filename}`) : [];
+    
+    console.log('📸 Creating product with images:', images);
+    console.log('📁 Files received:', req.files?.length || 0);
 
     const product = new Product({
       title,
@@ -111,8 +114,10 @@ router.post('/', upload.array('images', 5), async (req, res) => {
     });
 
     await product.save();
+    console.log('✅ Product saved with images:', product.images);
     res.status(201).json({ success: true, data: product, message: 'Product created successfully' });
   } catch (error) {
+    console.error('❌ Error creating product:', error);
     res.status(400).json({ success: false, message: error.message });
   }
 });
@@ -135,6 +140,10 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
 
     const { title, category, price, description, featured, inStock, existingImages } = req.body;
     
+    console.log('📝 Updating product:', product.title);
+    console.log('📁 Files received:', req.files?.length || 0);
+    console.log('🖼️ Existing images:', existingImages);
+    
     // Handle existing images
     let images = [];
     if (existingImages) {
@@ -145,7 +154,10 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
     if (req.files && req.files.length > 0) {
       const newImages = req.files.map(file => `/uploads/products/${file.filename}`);
       images = [...images, ...newImages];
+      console.log('📸 New images added:', newImages);
     }
+    
+    console.log('🎯 Final images array:', images);
 
     // Update product fields
     product.title = title || product.title;
@@ -157,6 +169,7 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
     product.inStock = inStock !== 'false' && inStock !== false;
 
     await product.save();
+    console.log('✅ Product updated with images:', product.images);
     res.json({ success: true, data: product, message: 'Product updated successfully' });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
