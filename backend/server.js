@@ -39,6 +39,14 @@ app.use(session({
   proxy: process.env.NODE_ENV === 'production' // Trust proxy in production (Render uses proxy)
 }));
 
+// Debug middleware (only in production to see session issues)
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    console.log(`🔍 ${req.method} ${req.path} - Session ID: ${req.sessionID} - isAdmin: ${req.session?.isAdmin}`);
+    next();
+  });
+}
+
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

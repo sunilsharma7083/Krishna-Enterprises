@@ -43,13 +43,24 @@ router.post('/login', async (req, res) => {
     req.session.email = admin.email;
     req.session.name = admin.name;
 
-    res.json({ 
-      success: true, 
-      message: 'Login successful',
-      data: { 
-        name: admin.name,
-        email: admin.email 
+    // Save session explicitly before sending response (critical for production)
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ 
+          success: false, 
+          message: 'Failed to create session' 
+        });
       }
+
+      res.json({ 
+        success: true, 
+        message: 'Login successful',
+        data: { 
+          name: admin.name,
+          email: admin.email 
+        }
+      });
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
