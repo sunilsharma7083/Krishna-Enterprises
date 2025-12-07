@@ -62,30 +62,28 @@ function toggleMobileMenu() {
   console.log('🔘 Menu Button element:', menuBtn);
   
   if (mobileMenu) {
-    const currentDisplay = mobileMenu.style.display;
-    const isHidden = currentDisplay === 'none' || !currentDisplay;
+    const isActive = mobileMenu.classList.contains('active');
     
-    console.log('📊 Current display:', currentDisplay);
-    console.log('🔍 Is hidden:', isHidden);
+    console.log('📊 Has active class:', isActive);
     
-    if (isHidden) {
-      mobileMenu.style.display = 'block';
-      console.log('✅ Menu opened - display set to block');
+    if (isActive) {
+      mobileMenu.classList.remove('active');
+      console.log('✅ Menu closed - removed active class');
     } else {
-      mobileMenu.style.display = 'none';
-      console.log('✅ Menu closed - display set to none');
+      mobileMenu.classList.add('active');
+      console.log('✅ Menu opened - added active class');
     }
     
     // Toggle icon
     if (menuBtn) {
       const icon = menuBtn.querySelector('i');
       if (icon) {
-        if (isHidden) {
-          icon.className = 'fas fa-times';
-          console.log('🔄 Icon changed to X');
-        } else {
+        if (isActive) {
           icon.className = 'fas fa-bars';
           console.log('🔄 Icon changed to hamburger');
+        } else {
+          icon.className = 'fas fa-times';
+          console.log('🔄 Icon changed to X');
         }
       }
     }
@@ -96,17 +94,20 @@ function toggleMobileMenu() {
 
 // Close mobile menu
 function closeMobileMenu() {
+  console.log('🚪 Closing mobile menu');
   const mobileMenu = document.getElementById('mobile-menu');
   const menuBtn = document.getElementById('mobile-menu-btn');
   
   if (mobileMenu) {
-    mobileMenu.style.display = 'none';
+    mobileMenu.classList.remove('active');
+    console.log('✅ Menu closed - removed active class');
   }
   
   if (menuBtn) {
     const icon = menuBtn.querySelector('i');
     if (icon) {
       icon.className = 'fas fa-bars';
+      console.log('🔄 Icon reset to hamburger');
     }
   }
 }
@@ -156,7 +157,7 @@ function setupMobileMenu() {
       const isClickInsideMenu = mobileMenu.contains(e.target);
       const isClickOnButton = menuBtnElement && menuBtnElement.contains(e.target);
       
-      if (!isClickInsideMenu && !isClickOnButton && mobileMenu.style.display === 'block') {
+      if (!isClickInsideMenu && !isClickOnButton && mobileMenu.classList.contains('active')) {
         console.log('🚪 Closing menu - clicked outside');
         closeMobileMenu();
       }
