@@ -7,6 +7,11 @@ require('dotenv').config();
 
 const app = express();
 
+// Trust proxy - Required for Render.com
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // Middleware
 app.use(cors({
   origin: [
@@ -21,15 +26,17 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session configuration (must be before static files)
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'fallback-secret-key-change-this',
   resave: false,
   saveUninitialized: false,
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // Required for cross-origin cookies
-  }
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Required for cross-origin cookies
+    domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost' // Let browser handle domain in production
+  },
+  proxy: process.env.NODE_ENV === 'production' // Trust proxy in production (Render uses proxy)
 }));
 
 app.use(express.static(path.join(__dirname, '../frontend')));
