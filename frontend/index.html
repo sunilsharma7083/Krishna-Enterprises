@@ -190,16 +190,16 @@
         <a href="#products" class="mobile-menu-link block py-2 hover:text-yellow-400 transition">Products</a>
         <a href="#about" class="mobile-menu-link block py-2 hover:text-yellow-400 transition">About</a>
         <a href="#contact" class="mobile-menu-link block py-2 hover:text-yellow-400 transition">Contact</a>
-        <button onclick="viewCart(); toggleMobileMenu();" class="block py-2 hover:text-yellow-400 transition text-left">
+        <button onclick="viewCart()" class="mobile-menu-link block py-2 hover:text-yellow-400 transition text-left w-full">
           Cart <span id="cart-badge-mobile" class="badge bg-red-500 text-white ml-2 hidden">0</span>
         </button>
         <div id="mobile-auth-buttons">
-          <button onclick="showLoginModal()" class="block py-2 text-yellow-400">Login / Sign Up</button>
+          <button onclick="showLoginModal()" class="mobile-menu-link block py-2 text-yellow-400 text-left w-full">Login / Sign Up</button>
         </div>
         <div id="mobile-user-menu" class="hidden">
-          <a href="#" onclick="viewProfile(); return false;" class="block py-2 text-yellow-400">My Profile</a>
-          <a href="#" onclick="viewMyOrders(); return false;" class="block py-2 text-yellow-400">My Orders</a>
-          <button onclick="userLogout()" class="block py-2 text-red-400">Logout</button>
+          <a href="#" onclick="viewProfile(); return false;" class="mobile-menu-link block py-2 text-yellow-400">My Profile</a>
+          <a href="#" onclick="viewMyOrders(); return false;" class="mobile-menu-link block py-2 text-yellow-400">My Orders</a>
+          <button onclick="userLogout()" class="mobile-menu-link block py-2 text-red-400 text-left w-full">Logout</button>
         </div>
       </div>
     </div>

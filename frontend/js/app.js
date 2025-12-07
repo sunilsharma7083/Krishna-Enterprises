@@ -66,30 +66,51 @@ function setupMobileMenu() {
   const mobileMenu = document.getElementById('mobile-menu');
   
   if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', () => {
+    // Toggle menu on button click
+    menuBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isHidden = mobileMenu.classList.contains('hidden');
       mobileMenu.classList.toggle('hidden');
+      
       // Toggle icon between bars and times
       const icon = menuBtn.querySelector('i');
       if (icon) {
-        if (mobileMenu.classList.contains('hidden')) {
-          icon.className = 'fas fa-bars';
-        } else {
+        if (isHidden) {
           icon.className = 'fas fa-times';
+        } else {
+          icon.className = 'fas fa-bars';
         }
       }
     });
     
-    // Close menu when clicking on a link
-    const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
-    menuLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        // Reset icon to bars
-        const icon = menuBtn.querySelector('i');
-        if (icon) {
-          icon.className = 'fas fa-bars';
+    // Close menu when clicking on any link in mobile menu (event delegation)
+    mobileMenu.addEventListener('click', (e) => {
+      // Check if clicked element is a link or inside a link
+      const link = e.target.closest('a, button');
+      if (link) {
+        // Small delay to allow navigation to happen
+        setTimeout(() => {
+          mobileMenu.classList.add('hidden');
+          const icon = menuBtn.querySelector('i');
+          if (icon) {
+            icon.className = 'fas fa-bars';
+          }
+        }, 100);
+      }
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+        if (!mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          const icon = menuBtn.querySelector('i');
+          if (icon) {
+            icon.className = 'fas fa-bars';
+          }
         }
-      });
+      }
     });
   }
 }
