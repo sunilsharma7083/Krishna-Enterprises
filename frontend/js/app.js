@@ -116,7 +116,7 @@ function loadHomePage() {
           <!-- Right Content - Featured Trophy Image -->
           <div class="relative mt-8 md:mt-0">
             <div class="relative rounded-lg overflow-hidden shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&h=600&fit=crop" 
+              <img src="https://png.pngtree.com/background/20220726/original/pngtree-awards-realistic-composition-with-trophies-for-winner-picture-image_1797925.jpg" 
                    alt="Krishna Enterprises - Premium Golden Trophy Awards Collection" 
                    class="w-full h-64 md:h-96 object-cover transform hover:scale-110 transition duration-500"
                    onerror="this.onerror=null; this.src='https://png.pngtree.com/background/20220726/original/pngtree-awards-realistic-composition-with-trophies-for-winner-picture-image_1797925.jpg';">
