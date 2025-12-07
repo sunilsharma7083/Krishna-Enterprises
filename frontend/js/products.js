@@ -40,19 +40,35 @@ async function loadProducts(search = null, category = null) {
   }
 }
 
+// Helper function to get full image URL
+function getImageUrl(imagePath) {
+  if (!imagePath) return 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop';
+  
+  // If already a full URL (starts with http/https), return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // If relative path, prepend API base URL (without /api)
+  const baseUrl = API_BASE.replace('/api', '');
+  return `${baseUrl}${imagePath}`;
+}
+
 // Display products in grid
 function displayProducts(products) {
   const gridElement = document.getElementById('products-grid');
   if (!gridElement) return;
   
-  gridElement.innerHTML = products.map(product => `
+  gridElement.innerHTML = products.map(product => {
+    const imageUrl = getImageUrl(product.images && product.images.length > 0 ? product.images[0] : null);
+    return `
     <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer group" onclick="loadProductDetail('${product._id}')">
       <div class="relative bg-gray-100">
-        <img src="${product.images && product.images.length > 0 ? product.images[0] : 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'}" 
+        <img src="${imageUrl}" 
              alt="${product.title}" 
              class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
              loading="lazy"
-             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'; console.log('Image load error for: ${product.title}');">
+             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'; console.log('Image load error for: ${product.title}', '${imageUrl}');">
         ${product.featured ? '<span class="absolute top-2 right-2 bg-yellow-500 text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg">⭐ Featured</span>' : ''}
         ${!product.inStock ? '<span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">Out of Stock</span>' : ''}
       </div>
@@ -91,7 +107,8 @@ function displayProducts(products) {
         </button>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 // Quick add to cart from product card
@@ -160,7 +177,7 @@ async function loadProductDetail(productId) {
               <div class="p-4 md:p-8">
                 <div class="mb-4 bg-gray-100 rounded-lg p-4">
                   <img id="main-image" 
-                       src="${product.images && product.images.length > 0 ? product.images[0] : 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=600&h=600&fit=crop'}" 
+                       src="${getImageUrl(product.images && product.images.length > 0 ? product.images[0] : null)}" 
                        alt="${product.title}" 
                        class="w-full h-64 md:h-96 object-contain rounded-lg"
                        loading="lazy"
@@ -168,14 +185,17 @@ async function loadProductDetail(productId) {
                 </div>
                 ${product.images && product.images.length > 1 ? `
                   <div class="grid grid-cols-3 md:grid-cols-4 gap-2">
-                    ${product.images.map((img, index) => `
-                      <img src="${img}" 
+                    ${product.images.map((img, index) => {
+                      const thumbUrl = getImageUrl(img);
+                      return `
+                      <img src="${thumbUrl}" 
                            alt="${product.title} - Image ${index + 1}" 
-                           onclick="document.getElementById('main-image').src='${img}'"
+                           onclick="document.getElementById('main-image').src='${thumbUrl}'"
                            class="w-full h-16 md:h-20 object-cover rounded-lg cursor-pointer border-2 hover:border-yellow-400 transition bg-gray-100"
                            loading="lazy"
                            onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=100&h=100&fit=crop';">
-                    `).join('')}
+                    `;
+                    }).join('')}
                   </div>
                 ` : ''}
               </div>

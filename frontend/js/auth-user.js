@@ -352,7 +352,206 @@ async function handleProfileUpdate(e) {
   }
 }
 
-// View my orders (placeholder - you can implement full order history)
-function viewMyOrders() {
-  showToast('Order history feature coming soon!', 'info');
+// View my orders
+async function viewMyOrders() {
+  try {
+    // Get user info
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    if (!user.email && !user.phone) {
+      showToast('Please update your profile with email or phone first', 'error');
+      return;
+    }
+
+    // Fetch orders from API
+    const response = await fetch(`${API_BASE}/orders/my-orders?email=${user.email || ''}&phone=${user.phone || ''}`, {
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch orders');
+    }
+
+    const result = await response.json();
+    const orders = result.data || [];
+
+    if (orders.length === 0) {
+      showOrdersModal([]);
+      return;
+    }
+
+    showOrdersModal(orders);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    showToast('Failed to load orders. Please try again.', 'error');
+  }
+}
+
+// Show orders in modal
+function showOrdersModal(orders) {
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.remove();
+  };
+
+  modal.innerHTML = `
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="sticky top-0 bg-gradient-to-r from-yellow-400 to-yellow-600 text-gray-900 p-6 flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-bold flex items-center">
+            <i class="fas fa-shopping-bag mr-3"></i>
+            My Orders
+          </h2>
+          <p class="text-sm text-gray-700 mt-1">${orders.length} order(s) found</p>
+        </div>
+        <button onclick="this.closest('.fixed').remove()" 
+                class="text-gray-900 hover:text-gray-700 text-2xl font-bold">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="p-6">
+        ${orders.length === 0 ? `
+          <div class="text-center py-12">
+            <i class="fas fa-shopping-cart text-gray-300 text-6xl mb-4"></i>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2">No Orders Yet</h3>
+            <p class="text-gray-500 mb-4">You haven't placed any orders yet.</p>
+            <button onclick="this.closest('.fixed').remove(); window.location.hash='#products'" 
+                    class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-6 py-3 rounded-lg">
+              <i class="fas fa-shopping-bag mr-2"></i>Start Shopping
+            </button>
+          </div>
+        ` : `
+          <div class="space-y-4">
+            ${orders.map(order => `
+              <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-4">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2">
+                      <h3 class="text-lg font-bold text-gray-900">
+                        Order #${order.orderNumber}
+                      </h3>
+                      <span class="px-3 py-1 rounded-full text-xs font-semibold ${
+                        order.status === 'completed' ? 'bg-green-100 text-green-800' :
+                        order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                      }">
+                        ${order.status.toUpperCase()}
+                      </span>
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      <i class="fas fa-calendar mr-2"></i>
+                      ${new Date(order.createdAt).toLocaleDateString('en-IN', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </p>
+                  </div>
+                  <div class="text-left md:text-right">
+                    <p class="text-sm text-gray-600 mb-1">Total Amount</p>
+                    <p class="text-2xl font-bold text-yellow-600">₹${order.totalAmount.toLocaleString('en-IN')}</p>
+                  </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                  <h4 class="font-semibold text-gray-900 mb-3 flex items-center">
+                    <i class="fas fa-box mr-2 text-yellow-600"></i>
+                    Order Items (${order.items.length})
+                  </h4>
+                  <div class="space-y-2">
+                    ${order.items.map(item => `
+                      <div class="flex items-center gap-3 bg-white p-3 rounded-lg hover:shadow-md transition cursor-pointer"
+                           onclick="window.location.hash='#products'; document.querySelector('.fixed')?.remove();">
+                        <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                          ${item.productId && item.productId.images && item.productId.images.length > 0 ? `
+                            <img src="${item.productId.images[0]}" 
+                                 alt="${item.title}" 
+                                 class="w-full h-full object-cover"
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=100&h=100&fit=crop';">
+                          ` : `
+                            <div class="w-full h-full flex items-center justify-center">
+                              <i class="fas fa-trophy text-yellow-400 text-2xl"></i>
+                            </div>
+                          `}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <p class="font-semibold text-gray-900 truncate">${item.title}</p>
+                          <p class="text-sm text-gray-600">Quantity: ${item.quantity}</p>
+                        </div>
+                        <div class="text-right">
+                          <p class="font-semibold text-gray-900">₹${item.price.toLocaleString('en-IN')}</p>
+                          <p class="text-xs text-gray-500">per item</p>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div class="bg-blue-50 p-3 rounded-lg">
+                    <p class="font-semibold text-gray-900 mb-2 flex items-center">
+                      <i class="fas fa-user mr-2 text-blue-600"></i>
+                      Customer Details
+                    </p>
+                    <p class="text-gray-700"><strong>Name:</strong> ${order.customerName}</p>
+                    ${order.email ? `<p class="text-gray-700"><strong>Email:</strong> ${order.email}</p>` : ''}
+                    <p class="text-gray-700"><strong>Phone:</strong> ${order.phone}</p>
+                  </div>
+                  <div class="bg-green-50 p-3 rounded-lg">
+                    <p class="font-semibold text-gray-900 mb-2 flex items-center">
+                      <i class="fas fa-map-marker-alt mr-2 text-green-600"></i>
+                      Delivery Address
+                    </p>
+                    <p class="text-gray-700">${order.address}</p>
+                    <p class="text-gray-700">${order.city}, ${order.state} - ${order.pincode}</p>
+                  </div>
+                </div>
+
+                ${order.message ? `
+                  <div class="mt-4 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400">
+                    <p class="font-semibold text-gray-900 mb-1">
+                      <i class="fas fa-comment mr-2 text-yellow-600"></i>
+                      Order Message
+                    </p>
+                    <p class="text-gray-700 text-sm">${order.message}</p>
+                  </div>
+                ` : ''}
+
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <button onclick="window.open('https://wa.me/917014881124?text=Hi, I have a question about Order ${order.orderNumber}', '_blank')"
+                          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <i class="fab fa-whatsapp"></i> Contact on WhatsApp
+                  </button>
+                  ${order.status === 'pending' ? `
+                    <button onclick="alert('To cancel order, please contact us on WhatsApp')"
+                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                      <i class="fas fa-times-circle"></i> Request Cancel
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `}
+      </div>
+
+      <div class="sticky bottom-0 bg-gray-50 p-4 flex justify-end gap-3 border-t">
+        <button onclick="this.closest('.fixed').remove()" 
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-3 rounded-lg">
+          Close
+        </button>
+        <button onclick="window.location.hash='#products'; this.closest('.fixed').remove()" 
+                class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-6 py-3 rounded-lg">
+          <i class="fas fa-shopping-bag mr-2"></i>Continue Shopping
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
 }

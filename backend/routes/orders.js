@@ -30,6 +30,40 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   GET /api/orders/my-orders
+// @desc    Get user's orders by email or phone
+// @access  Public
+router.get('/my-orders', async (req, res) => {
+  try {
+    const { email, phone } = req.query;
+
+    if (!email && !phone) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Please provide email or phone number' 
+      });
+    }
+
+    let query = {};
+    if (email && phone) {
+      query = { $or: [{ email }, { phone }] };
+    } else if (email) {
+      query.email = email;
+    } else {
+      query.phone = phone;
+    }
+
+    const orders = await Order.find(query)
+      .populate('items.productId')
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, data: orders });
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // @route   GET /api/orders/:id
 // @desc    Get single order by ID
 // @access  Private

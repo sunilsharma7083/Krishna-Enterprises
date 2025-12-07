@@ -2,6 +2,20 @@
 // API_BASE is loaded from config.js
 let currentPage = 'home';
 
+// Helper function to get full image URL
+function getImageUrl(imagePath) {
+  if (!imagePath) return 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop';
+  
+  // If already a full URL (starts with http/https), return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // If relative path, prepend API base URL (without /api)
+  const baseUrl = API_BASE.replace('/api', '');
+  return `${baseUrl}${imagePath}`;
+}
+
 // Initialize app on page load
 document.addEventListener('DOMContentLoaded', () => {
   initializeApp();
@@ -573,15 +587,17 @@ async function loadHomeFeaturedProducts() {
     // Show first 4 products
     const featuredProducts = sortedProducts.slice(0, 4);
     
-    grid.innerHTML = featuredProducts.map(product => `
+    grid.innerHTML = featuredProducts.map(product => {
+      const imageUrl = getImageUrl(product.images && product.images.length > 0 ? product.images[0] : null);
+      return `
       <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group cursor-pointer" onclick="window.location.hash='#products'">
         <div class="aspect-square bg-gradient-to-br from-yellow-50 to-gray-50 flex items-center justify-center p-2 md:p-3">
           ${product.images && product.images.length > 0 
-            ? `<img src="${product.images[0]}" 
+            ? `<img src="${imageUrl}" 
                     alt="${product.title || product.name}" 
                     class="w-full h-full object-contain group-hover:scale-105 transition duration-300" 
                     loading="lazy"
-                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'; console.log('Featured product image error:', '${product.title || product.name}');" />`
+                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'; console.log('Featured product image error:', '${product.title || product.name}', '${imageUrl}');" />`
             : `<i class="fas fa-trophy text-yellow-400 text-3xl md:text-4xl opacity-50"></i>`
           }
         </div>
@@ -598,7 +614,8 @@ async function loadHomeFeaturedProducts() {
           </div>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
   } catch (error) {
     console.error('Error loading featured products:', error);
     const grid = document.getElementById('home-featured-products');
