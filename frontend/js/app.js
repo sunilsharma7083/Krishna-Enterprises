@@ -78,45 +78,78 @@ function loadHomePage() {
   const content = document.getElementById('app-content');
   
   content.innerHTML = `
-    <!-- Hero Section -->
-    <section id="home" class="hero-gradient text-white py-20 md:py-28">
-      <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div class="space-y-6 md:space-y-8">
-            <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+    <!-- Hero Section with Responsive Background Image -->
+    <section id="home" class="relative text-white py-16 md:py-24 lg:py-32 overflow-hidden">
+      <!-- Background Image (visible on all devices) -->
+      <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=1920&h=1080&fit=crop" 
+             alt="Krishna Enterprises Trophy Background" 
+             class="w-full h-full object-cover"
+             onerror="this.onerror=null; this.src='https://png.pngtree.com/background/20220726/original/pngtree-awards-realistic-composition-with-trophies-for-winner-picture-image_1797925.jpg';">
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/85 to-gray-900/70"></div>
+        <!-- Dot Pattern Overlay -->
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle, rgba(251, 191, 36, 0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <!-- Left Content -->
+          <div class="space-y-4 md:space-y-6">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               Premium <span class="text-yellow-400">Trophies</span> & Awards
             </h1>
-            <p class="text-xl md:text-2xl text-gray-300">
+            <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200">
               Celebrate Excellence with Krishna Enterprises - Your Trusted Partner for Custom Recognition Products in Jaipur
             </p>
-            <div class="flex flex-wrap gap-4">
-              <a href="#products" class="gold-gradient text-gray-900 font-semibold px-8 py-4 rounded-lg hover:shadow-xl transition transform hover:scale-105 flex items-center">
+            <div class="flex flex-col sm:flex-row gap-3 md:gap-4 pt-4">
+              <a href="#products" class="gold-gradient text-gray-900 font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg hover:shadow-xl transition transform hover:scale-105 flex items-center justify-center">
                 <i class="fas fa-trophy mr-2"></i>Browse Products
               </a>
-              <a href="#contact" class="bg-white hover:bg-gray-100 text-gray-900 font-semibold px-8 py-4 rounded-lg transition transform hover:scale-105 flex items-center">
+              <a href="#contact" class="bg-white hover:bg-gray-100 text-gray-900 font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg transition transform hover:scale-105 flex items-center justify-center">
                 <i class="fas fa-phone mr-2"></i>Contact Us
               </a>
             </div>
           </div>
-          <div class="hidden md:block">
-            <div class="relative">
-              <img src="/images/hero-trophies.jpg" 
+
+          <!-- Right Content - Featured Trophy Image -->
+          <div class="relative mt-8 md:mt-0">
+            <div class="relative rounded-lg overflow-hidden shadow-2xl">
+              <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&h=600&fit=crop" 
                    alt="Krishna Enterprises - Premium Golden Trophy Awards Collection" 
-                   class="rounded-lg shadow-2xl w-full h-auto object-cover transform hover:scale-105 transition duration-500"
+                   class="w-full h-64 md:h-96 object-cover transform hover:scale-110 transition duration-500"
                    onerror="this.onerror=null; this.src='https://png.pngtree.com/background/20220726/original/pngtree-awards-realistic-composition-with-trophies-for-winner-picture-image_1797925.jpg';">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-lg"></div>
-              <div class="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 rounded-lg px-4 py-2 shadow-lg z-10">
-                <p class="text-sm font-bold flex items-center">
+              <!-- Image Overlay -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              
+              <!-- Premium Quality Badge -->
+              <div class="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 rounded-lg px-3 py-2 md:px-4 md:py-2 shadow-lg">
+                <p class="text-xs md:text-sm font-bold flex items-center">
                   <i class="fas fa-award mr-2"></i>Premium Quality
                 </p>
               </div>
-              <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-yellow-400 to-yellow-600 text-gray-900 rounded-lg p-6 shadow-xl z-10">
-                <p class="text-3xl font-bold">10+</p>
-                <p class="text-sm font-semibold">Years Experience</p>
+              
+              <!-- Experience Badge -->
+              <div class="absolute bottom-4 right-4 bg-gradient-to-br from-yellow-400 to-yellow-600 text-gray-900 rounded-lg p-3 md:p-6 shadow-xl">
+                <p class="text-2xl md:text-3xl font-bold">10+</p>
+                <p class="text-xs md:text-sm font-semibold">Years Experience</p>
               </div>
             </div>
+
+            <!-- Floating Elements (Desktop Only) -->
+            <div class="hidden lg:block absolute -top-6 -right-6 w-24 h-24 bg-yellow-400 rounded-full opacity-20 blur-xl"></div>
+            <div class="hidden lg:block absolute -bottom-6 -left-6 w-32 h-32 bg-yellow-500 rounded-full opacity-20 blur-xl"></div>
           </div>
         </div>
+      </div>
+
+      <!-- Animated Trophy Icons (Background Decoration) -->
+      <div class="absolute top-10 left-10 opacity-10 animate-pulse hidden lg:block">
+        <i class="fas fa-trophy text-yellow-400 text-6xl"></i>
+      </div>
+      <div class="absolute bottom-20 right-20 opacity-10 animate-pulse hidden lg:block" style="animation-delay: 1s;">
+        <i class="fas fa-award text-yellow-400 text-5xl"></i>
       </div>
     </section>
 
