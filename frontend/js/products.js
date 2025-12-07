@@ -47,11 +47,12 @@ function displayProducts(products) {
   
   gridElement.innerHTML = products.map(product => `
     <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer group" onclick="loadProductDetail('${product._id}')">
-      <div class="relative">
-        <img src="${product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/400x400?text=Trophy'}" 
+      <div class="relative bg-gray-100">
+        <img src="${product.images && product.images.length > 0 ? product.images[0] : 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'}" 
              alt="${product.title}" 
              class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=Trophy+Image';">
+             loading="lazy"
+             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'; console.log('Image load error for: ${product.title}');">
         ${product.featured ? '<span class="absolute top-2 right-2 bg-yellow-500 text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg">⭐ Featured</span>' : ''}
         ${!product.inStock ? '<span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">Out of Stock</span>' : ''}
       </div>
@@ -156,22 +157,24 @@ async function loadProductDetail(productId) {
           <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="grid md:grid-cols-2 gap-8">
               <!-- Product Images -->
-              <div class="p-8">
-                <div class="mb-4">
+              <div class="p-4 md:p-8">
+                <div class="mb-4 bg-gray-100 rounded-lg p-4">
                   <img id="main-image" 
-                       src="${product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/600x600?text=Trophy'}" 
+                       src="${product.images && product.images.length > 0 ? product.images[0] : 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=600&h=600&fit=crop'}" 
                        alt="${product.title}" 
-                       class="w-full h-96 object-contain rounded-lg bg-gray-50"
-                       onerror="this.onerror=null; this.src='https://via.placeholder.com/600x600?text=Trophy+Image';">
+                       class="w-full h-64 md:h-96 object-contain rounded-lg"
+                       loading="lazy"
+                       onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=600&h=600&fit=crop';">
                 </div>
                 ${product.images && product.images.length > 1 ? `
-                  <div class="grid grid-cols-4 gap-2">
+                  <div class="grid grid-cols-3 md:grid-cols-4 gap-2">
                     ${product.images.map((img, index) => `
                       <img src="${img}" 
-                           alt="${product.title}" 
+                           alt="${product.title} - Image ${index + 1}" 
                            onclick="document.getElementById('main-image').src='${img}'"
-                           class="w-full h-20 object-cover rounded-lg cursor-pointer border-2 hover:border-yellow-400 transition"
-                           onerror="this.onerror=null; this.src='https://via.placeholder.com/100x100?text=Trophy';">
+                           class="w-full h-16 md:h-20 object-cover rounded-lg cursor-pointer border-2 hover:border-yellow-400 transition bg-gray-100"
+                           loading="lazy"
+                           onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=100&h=100&fit=crop';">
                     `).join('')}
                   </div>
                 ` : ''}

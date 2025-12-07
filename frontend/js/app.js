@@ -574,10 +574,14 @@ async function loadHomeFeaturedProducts() {
     const featuredProducts = sortedProducts.slice(0, 4);
     
     grid.innerHTML = featuredProducts.map(product => `
-      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group">
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group cursor-pointer" onclick="window.location.hash='#products'">
         <div class="aspect-square bg-gradient-to-br from-yellow-50 to-gray-50 flex items-center justify-center p-2 md:p-3">
           ${product.images && product.images.length > 0 
-            ? `<img src="${product.images[0]}" alt="${product.title || product.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-300" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=Trophy'" />`
+            ? `<img src="${product.images[0]}" 
+                    alt="${product.title || product.name}" 
+                    class="w-full h-full object-contain group-hover:scale-105 transition duration-300" 
+                    loading="lazy"
+                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop'; console.log('Featured product image error:', '${product.title || product.name}');" />`
             : `<i class="fas fa-trophy text-yellow-400 text-3xl md:text-4xl opacity-50"></i>`
           }
         </div>
@@ -588,9 +592,9 @@ async function loadHomeFeaturedProducts() {
             <span class="text-green-600 font-semibold text-xs md:text-sm flex items-center">
               <i class="fas fa-boxes mr-1"></i> Available in Bulk
             </span>
-            <a href="#products" class="text-yellow-600 hover:text-yellow-700 text-xs font-semibold inline-flex items-center">
+            <span class="text-yellow-600 hover:text-yellow-700 text-xs font-semibold inline-flex items-center">
               View <i class="fas fa-arrow-right ml-1 text-xs"></i>
-            </a>
+            </span>
           </div>
         </div>
       </div>
