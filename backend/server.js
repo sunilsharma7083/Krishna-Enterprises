@@ -42,7 +42,7 @@ app.use(session({
 // Debug middleware (only in production to see session issues)
 if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
-    console.log(`🔍 ${req.method} ${req.path} - Session ID: ${req.sessionID} - isAdmin: ${req.session?.isAdmin}`);
+    console.log(`🔍 ${req.method} ${req.path} - isAdmin: ${req.session?.isAdmin}`);
     next();
   });
 }
