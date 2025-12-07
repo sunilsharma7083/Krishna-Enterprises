@@ -153,146 +153,230 @@ function loadHomePage() {
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center text-gray-900 mb-12">Why Choose Us?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div class="text-center p-6">
-            <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-gem text-white text-2xl"></i>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Premium Quality</h3>
-            <p class="text-gray-600">Finest materials and craftsmanship</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-paint-brush text-white text-2xl"></i>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Custom Designs</h3>
-            <p class="text-gray-600">Personalized to your requirements</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-shipping-fast text-white text-2xl"></i>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
-            <p class="text-gray-600">Quick turnaround times</p>
-          </div>
-          <div class="text-center p-6">
-            <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="fas fa-handshake text-white text-2xl"></i>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Trusted Service</h3>
-            <p class="text-gray-600">Years of excellence in Jaipur</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Product Categories Section -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-12 md:py-16 bg-gray-50">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">Product Categories</h2>
-          <p class="text-xl text-gray-600 mb-6">Browse our collection by category</p>
-          <div class="w-24 h-1 bg-yellow-400 mx-auto"></div>
+        <div class="text-center mb-8 md:mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4">Product Categories</h2>
+          <p class="text-lg md:text-xl text-gray-600 mb-4 md:mb-6">Browse our collection by category</p>
+          <div class="w-20 md:w-24 h-1 bg-yellow-400 mx-auto"></div>
         </div>
         
-        <div id="home-categories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div id="home-categories-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
           <div class="text-center py-12">
             <i class="fas fa-spinner fa-spin text-4xl text-yellow-500"></i>
             <p class="text-gray-600 mt-4">Loading categories...</p>
           </div>
         </div>
 
-        <div class="text-center">
-          <a href="#products" class="inline-block gold-gradient text-gray-900 font-bold px-8 py-4 rounded-lg hover:shadow-xl transition transform hover:scale-105">
-            <i class="fas fa-arrow-right mr-2"></i>View All Products
+        <!-- Featured Products -->
+        <div class="mb-6 md:mb-8">
+          <div class="text-center mb-4 md:mb-6">
+            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-1 md:mb-2">Featured Products</h3>
+            <p class="text-sm md:text-base text-gray-600">Popular items from our collection</p>
+          </div>
+          <div id="home-featured-products" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            <div class="col-span-2 lg:col-span-4 text-center py-6">
+              <i class="fas fa-spinner fa-spin text-2xl text-yellow-500"></i>
+              <p class="text-gray-600 mt-2 text-xs md:text-sm">Loading products...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4 md:mt-6">
+          <a href="#products" class="inline-block gold-gradient text-gray-900 font-semibold px-5 md:px-6 py-2 md:py-3 text-xs md:text-sm rounded-lg hover:shadow-xl transition transform hover:scale-105">
+            <i class="fas fa-arrow-right mr-1 md:mr-2 text-xs"></i>View All Products
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Customer Reviews Section -->
+    <!-- Why Choose Us Section -->
     <section class="py-16 bg-white">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">Customer Reviews</h2>
-          <p class="text-xl text-gray-600 mb-6">Share your experience with us</p>
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Why Choose Krishna Enterprises?</h2>
+          <p class="text-xl text-gray-600 mb-6">Your trusted partner for premium trophies and awards</p>
           <div class="w-24 h-1 bg-yellow-400 mx-auto"></div>
         </div>
+        <div class="max-w-6xl mx-auto">
+          <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg shadow-lg p-4 md:p-6 text-white">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
+                <div>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">10+ Years of Experience</h3>
+                  <p class="text-yellow-50 text-xs">Decade-long expertise in crafting premium trophies and awards.</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
+                <div>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Wide Product Range</h3>
+                  <p class="text-yellow-50 text-xs">Extensive collection catering to all types of recognition needs.</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
+                <div>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Custom Design Services</h3>
+                  <p class="text-yellow-50 text-xs">Personalized solutions tailored to your specific requirements.</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
+                <div>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Competitive Pricing</h3>
+                  <p class="text-yellow-50 text-xs">Best quality products at fair and transparent prices.</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
+                <div>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Fast Delivery</h3>
+                  <p class="text-yellow-50 text-xs">Quick turnaround times without compromising quality.</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
+                <div>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Local Presence</h3>
+                  <p class="text-yellow-50 text-xs">Proudly serving Jaipur and Rajasthan with dedicated local service.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <div class="max-w-4xl mx-auto">
+    <!-- Customer Reviews Section -->
+    <section class="py-8 md:py-12 bg-gradient-to-br from-yellow-50 via-white to-orange-50 relative overflow-hidden">
+      <!-- Decorative Background Elements -->
+      <div class="absolute top-0 right-0 w-40 h-40 md:w-64 md:h-64 bg-yellow-200 rounded-full opacity-10 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-60 h-60 md:w-96 md:h-96 bg-orange-200 rounded-full opacity-10 blur-3xl"></div>
+      
+      <div class="container mx-auto px-3 md:px-4 relative z-10">
+        <div class="text-center mb-6 md:mb-8">
+          <div class="inline-block mb-3">
+            <div class="flex items-center justify-center space-x-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-1.5 md:px-6 md:py-2 rounded-full shadow-lg">
+              <i class="fas fa-star text-xs md:text-sm"></i>
+              <i class="fas fa-star text-xs md:text-sm"></i>
+              <i class="fas fa-star text-xs md:text-sm"></i>
+              <i class="fas fa-star text-xs md:text-sm"></i>
+              <i class="fas fa-star text-xs md:text-sm"></i>
+            </div>
+          </div>
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 md:mb-3">Customer Reviews</h2>
+          <p class="text-sm md:text-base lg:text-lg text-gray-600 mb-3 md:mb-4 px-4">Share your experience with us</p>
+          <div class="w-16 md:w-20 h-1 bg-gradient-to-r from-yellow-400 to-orange-400 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="max-w-3xl mx-auto">
           <!-- Review Form -->
-          <div class="bg-gray-50 rounded-lg shadow-lg p-8 mb-12">
-            <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-              <i class="fas fa-star text-yellow-500 mr-3"></i>
-              Write a Review
-            </h3>
+          <div class="bg-white rounded-xl md:rounded-2xl shadow-xl p-4 md:p-6 lg:p-8 mb-6 md:mb-8 border border-yellow-200 relative overflow-hidden">
+            <!-- Decorative corner elements -->
+            <div class="absolute top-0 right-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-br from-yellow-400 to-orange-400 opacity-5 md:opacity-10 rounded-bl-full"></div>
+            <div class="absolute bottom-0 left-0 w-20 h-20 md:w-32 md:h-32 bg-gradient-to-tr from-yellow-400 to-orange-400 opacity-5 md:opacity-10 rounded-tr-full"></div>
             
-            <form id="review-form" class="space-y-6">
-              <div class="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label class="block text-gray-700 font-semibold mb-2">Your Name *</label>
-                  <input type="text" 
-                         id="review-name" 
-                         required
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                         placeholder="Enter your name">
+            <div class="relative z-10">
+              <div class="text-center mb-4 md:mb-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg mb-3">
+                  <i class="fas fa-pen-fancy text-white text-lg md:text-2xl"></i>
                 </div>
-                <div>
-                  <label class="block text-gray-700 font-semibold mb-2">Email (Optional)</label>
-                  <input type="email" 
-                         id="review-email"
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                         placeholder="your@email.com">
-                </div>
+                <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-1 md:mb-2">Write a Review</h3>
+                <p class="text-xs md:text-sm text-gray-600">Your feedback matters!</p>
               </div>
-
-              <div>
-                <label class="block text-gray-700 font-semibold mb-2">Rating *</label>
-                <div class="flex items-center space-x-2">
-                  <div id="star-rating" class="flex space-x-1">
-                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="1"></i>
-                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="2"></i>
-                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="3"></i>
-                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="4"></i>
-                    <i class="fas fa-star text-3xl text-gray-300 cursor-pointer hover:text-yellow-400 transition" data-rating="5"></i>
+            
+              <form id="review-form" class="space-y-3 md:space-y-4">
+                <div class="grid md:grid-cols-2 gap-3 md:gap-4">
+                  <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-1.5 md:mb-2 flex items-center text-sm md:text-base">
+                      <i class="fas fa-user text-yellow-500 mr-1.5 text-sm"></i>Your Name *
+                    </label>
+                    <div class="relative">
+                      <input type="text" 
+                             id="review-name" 
+                             required
+                             class="w-full px-3 py-2 md:px-4 md:py-3 pl-9 md:pl-11 border-2 border-yellow-200 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition text-sm md:text-base"
+                             placeholder="Enter your name">
+                      <i class="fas fa-user-circle absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 text-yellow-400 text-sm md:text-base"></i>
+                    </div>
                   </div>
-                  <span id="rating-text" class="text-gray-600 font-semibold ml-4">Select rating</span>
+                  <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-1.5 md:mb-2 flex items-center text-sm md:text-base">
+                      <i class="fas fa-envelope text-yellow-500 mr-1.5 text-sm"></i>Email (Optional)
+                    </label>
+                    <div class="relative">
+                      <input type="email" 
+                             id="review-email"
+                             class="w-full px-3 py-2 md:px-4 md:py-3 pl-9 md:pl-11 border-2 border-yellow-200 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition text-sm md:text-base"
+                             placeholder="your@email.com">
+                      <i class="fas fa-envelope-open absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 text-yellow-400 text-sm md:text-base"></i>
+                    </div>
+                  </div>
                 </div>
-                <input type="hidden" id="review-rating" required>
-              </div>
 
-              <div>
-                <label class="block text-gray-700 font-semibold mb-2">Your Review *</label>
-                <textarea id="review-message" 
-                          required
-                          rows="5"
-                          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                          placeholder="Tell us about your experience with Krishna Enterprises..."></textarea>
-              </div>
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 p-3 md:p-4 rounded-lg border border-yellow-200">
+                  <label class="block text-gray-700 font-semibold mb-2 md:mb-3 flex items-center text-sm md:text-base">
+                    <i class="fas fa-star text-yellow-500 mr-1.5 text-sm"></i>Rate Your Experience *
+                  </label>
+                  <div class="flex flex-col sm:flex-row items-center justify-center sm:space-x-3 space-y-2 sm:space-y-0">
+                    <div id="star-rating" class="flex space-x-1.5 md:space-x-2">
+                      <i class="fas fa-star text-3xl md:text-4xl text-gray-300 cursor-pointer hover:text-yellow-400 hover:scale-110 transition transform" data-rating="1"></i>
+                      <i class="fas fa-star text-3xl md:text-4xl text-gray-300 cursor-pointer hover:text-yellow-400 hover:scale-110 transition transform" data-rating="2"></i>
+                      <i class="fas fa-star text-3xl md:text-4xl text-gray-300 cursor-pointer hover:text-yellow-400 hover:scale-110 transition transform" data-rating="3"></i>
+                      <i class="fas fa-star text-3xl md:text-4xl text-gray-300 cursor-pointer hover:text-yellow-400 hover:scale-110 transition transform" data-rating="4"></i>
+                      <i class="fas fa-star text-3xl md:text-4xl text-gray-300 cursor-pointer hover:text-yellow-400 hover:scale-110 transition transform" data-rating="5"></i>
+                    </div>
+                    <span id="rating-text" class="text-gray-600 font-semibold text-xs md:text-sm bg-white px-3 py-1.5 rounded-full shadow-sm">Select rating</span>
+                  </div>
+                  <input type="hidden" id="review-rating" required>
+                </div>
 
-              <div id="review-success" class="hidden bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center">
-                <i class="fas fa-check-circle mr-2 text-xl"></i>
-                <span>Thank you for your review! It will be visible after approval.</span>
-              </div>
+                <div>
+                  <label class="block text-gray-700 font-semibold mb-1.5 md:mb-2 flex items-center text-sm md:text-base">
+                    <i class="fas fa-comment-dots text-yellow-500 mr-1.5 text-sm"></i>Your Review *
+                  </label>
+                  <div class="relative">
+                    <textarea id="review-message" 
+                              required
+                              rows="4"
+                              class="w-full px-3 py-2 md:px-4 md:py-3 border-2 border-yellow-200 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition resize-none text-sm md:text-base"
+                              placeholder="Share your experience..."></textarea>
+                    <i class="fas fa-pencil-alt absolute right-3 md:right-4 top-3 md:top-4 text-yellow-300 text-base md:text-lg"></i>
+                  </div>
+                </div>
 
-              <div id="review-error" class="hidden bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-center">
-                <i class="fas fa-exclamation-circle mr-2 text-xl"></i>
-                <span id="review-error-message">Something went wrong. Please try again.</span>
-              </div>
+                <div id="review-success" class="hidden bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300 text-green-800 px-3 py-3 md:px-4 md:py-4 rounded-lg md:rounded-xl flex items-center shadow-lg animate-fade-in">
+                  <div class="w-8 h-8 md:w-10 md:h-10 bg-green-500 rounded-full flex items-center justify-center mr-2 md:mr-3 flex-shrink-0">
+                    <i class="fas fa-check text-white text-sm md:text-base"></i>
+                  </div>
+                  <div>
+                    <p class="font-bold text-sm md:text-base">Thank you for your review!</p>
+                    <p class="text-xs md:text-sm">It will be visible after approval.</p>
+                  </div>
+                </div>
 
-              <button type="submit" 
-                      class="w-full gold-gradient text-gray-900 font-bold py-4 rounded-lg hover:shadow-xl transition transform hover:scale-105">
-                <i class="fas fa-paper-plane mr-2"></i>Submit Review
-              </button>
-            </form>
+                <div id="review-error" class="hidden bg-gradient-to-r from-red-50 to-pink-50 border border-red-300 text-red-800 px-3 py-3 md:px-4 md:py-4 rounded-lg md:rounded-xl flex items-center shadow-lg">
+                  <div class="w-8 h-8 md:w-10 md:h-10 bg-red-500 rounded-full flex items-center justify-center mr-2 md:mr-3 flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-white text-sm md:text-base"></i>
+                  </div>
+                  <span id="review-error-message" class="text-sm md:text-base">Something went wrong. Please try again.</span>
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-500 text-white font-bold py-3 md:py-4 rounded-lg md:rounded-xl hover:shadow-xl transition transform hover:scale-105 hover:from-yellow-500 hover:to-orange-600 flex items-center justify-center space-x-2 text-sm md:text-base">
+                  <i class="fas fa-paper-plane text-sm md:text-base"></i>
+                  <span>Submit Your Review</span>
+                  <i class="fas fa-heart"></i>
+                </button>
+              </form>
+            </div>
           </div>
 
           <!-- Recent Reviews Display -->
-          <div id="reviews-list" class="space-y-6">
+          <div id="reviews-list" class="space-y-4 md:space-y-6">
             <!-- Reviews will be loaded here -->
           </div>
         </div>
@@ -302,6 +386,9 @@ function loadHomePage() {
   
   // Load categories
   loadHomeCategories();
+  
+  // Load featured products
+  loadHomeFeaturedProducts();
   
   // Setup review form
   setupReviewForm();
@@ -335,14 +422,14 @@ async function loadHomeCategories() {
     grid.innerHTML = categories.map(category => `
       <a href="#products?category=${encodeURIComponent(category.slug || category.name)}" 
          class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition group cursor-pointer block">
-        <div class="p-8 text-center">
-          <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300">
-            <i class="fas ${category.icon || 'fa-folder'} text-white text-3xl"></i>
+        <div class="p-4 md:p-6 lg:p-8 text-center">
+          <div class="w-16 h-16 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300">
+            <i class="fas ${category.icon || 'fa-folder'} text-white text-2xl md:text-3xl"></i>
           </div>
-          <h3 class="font-bold text-xl mb-2 text-gray-900">${category.name}</h3>
-          <p class="text-gray-600 text-sm mb-4">${category.description || ''}</p>
-          <span class="inline-flex items-center text-yellow-600 font-semibold group-hover:text-yellow-700">
-            Browse <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition"></i>
+          <h3 class="font-bold text-base md:text-lg lg:text-xl mb-1 md:mb-2 text-gray-900">${category.name}</h3>
+          <p class="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2">${category.description || ''}</p>
+          <span class="inline-flex items-center text-yellow-600 text-sm md:text-base font-semibold group-hover:text-yellow-700">
+            Browse <i class="fas fa-arrow-right ml-1 md:ml-2 group-hover:translate-x-1 transition text-xs md:text-sm"></i>
           </span>
         </div>
       </a>
@@ -355,6 +442,63 @@ async function loadHomeCategories() {
         <div class="col-span-full text-center py-12">
           <i class="fas fa-exclamation-triangle text-6xl text-red-300 mb-4"></i>
           <p class="text-xl text-gray-500">Error loading products</p>
+        </div>
+      `;
+    }
+  }
+}
+
+// Load featured products for home page
+async function loadHomeFeaturedProducts() {
+  try {
+    const response = await fetch(`${API_BASE}/products`);
+    const result = await response.json();
+    const allProducts = result.data || result.products || result;
+    
+    const grid = document.getElementById('home-featured-products');
+    if (!grid) return;
+    
+    if (!allProducts || allProducts.length === 0) {
+      grid.innerHTML = `
+        <div class="col-span-full text-center py-8">
+          <i class="fas fa-box-open text-5xl text-gray-300 mb-3"></i>
+          <p class="text-lg text-gray-500">No products available</p>
+        </div>
+      `;
+      return;
+    }
+    
+    // Show first 4 products as featured
+    const featuredProducts = allProducts.slice(0, 4);
+    
+    grid.innerHTML = featuredProducts.map(product => `
+      <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition group">
+        <div class="aspect-square bg-gradient-to-br from-yellow-50 to-gray-50 flex items-center justify-center p-2 md:p-3">
+          ${product.images && product.images.length > 0 
+            ? `<img src="${product.images[0]}" alt="${product.name}" class="w-full h-full object-contain group-hover:scale-105 transition duration-300" />`
+            : `<i class="fas fa-trophy text-yellow-400 text-3xl md:text-4xl opacity-50"></i>`
+          }
+        </div>
+        <div class="p-2 md:p-3">
+          <h4 class="font-bold text-sm md:text-base text-gray-900 mb-1 line-clamp-1">${product.name}</h4>
+          <p class="text-xs text-gray-600 mb-1.5 md:mb-2 line-clamp-1">${product.description || 'Premium quality product'}</p>
+          <div class="flex justify-between items-center">
+            <span class="text-yellow-600 font-bold text-xs md:text-sm">₹${product.price?.toLocaleString('en-IN') || 'N/A'}</span>
+            <a href="#products" class="text-yellow-600 hover:text-yellow-700 text-xs font-semibold inline-flex items-center">
+              View <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading featured products:', error);
+    const grid = document.getElementById('home-featured-products');
+    if (grid) {
+      grid.innerHTML = `
+        <div class="col-span-full text-center py-8">
+          <i class="fas fa-exclamation-triangle text-5xl text-red-300 mb-3"></i>
+          <p class="text-lg text-gray-500">Error loading products</p>
         </div>
       `;
     }
@@ -581,49 +725,49 @@ function loadAboutPage() {
           </div>
 
           <!-- Why Choose Us -->
-          <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg shadow-lg p-8 md:p-12 text-white mb-12">
-            <h2 class="text-3xl font-bold mb-6">Why Choose Krishna Enterprises?</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="flex items-start space-x-3">
-                <i class="fas fa-check-circle text-2xl flex-shrink-0 mt-1"></i>
+          <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg shadow-lg p-4 md:p-6 text-white mb-12">
+            <h2 class="text-xl md:text-2xl font-bold mb-4">Why Choose Krishna Enterprises?</h2>
+            <div class="grid md:grid-cols-2 gap-3 md:gap-4">
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
                 <div>
-                  <h3 class="font-bold mb-1">10+ Years of Experience</h3>
-                  <p class="text-yellow-50">Decade-long expertise in crafting premium trophies and awards.</p>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">10+ Years of Experience</h3>
+                  <p class="text-yellow-50 text-xs">Decade-long expertise in crafting premium trophies and awards.</p>
                 </div>
               </div>
-              <div class="flex items-start space-x-3">
-                <i class="fas fa-check-circle text-2xl flex-shrink-0 mt-1"></i>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
                 <div>
-                  <h3 class="font-bold mb-1">Wide Product Range</h3>
-                  <p class="text-yellow-50">Extensive collection catering to all types of recognition needs.</p>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Wide Product Range</h3>
+                  <p class="text-yellow-50 text-xs">Extensive collection catering to all types of recognition needs.</p>
                 </div>
               </div>
-              <div class="flex items-start space-x-3">
-                <i class="fas fa-check-circle text-2xl flex-shrink-0 mt-1"></i>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
                 <div>
-                  <h3 class="font-bold mb-1">Custom Design Services</h3>
-                  <p class="text-yellow-50">Personalized solutions tailored to your specific requirements.</p>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Custom Design Services</h3>
+                  <p class="text-yellow-50 text-xs">Personalized solutions tailored to your specific requirements.</p>
                 </div>
               </div>
-              <div class="flex items-start space-x-3">
-                <i class="fas fa-check-circle text-2xl flex-shrink-0 mt-1"></i>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
                 <div>
-                  <h3 class="font-bold mb-1">Competitive Pricing</h3>
-                  <p class="text-yellow-50">Best quality products at fair and transparent prices.</p>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Competitive Pricing</h3>
+                  <p class="text-yellow-50 text-xs">Best quality products at fair and transparent prices.</p>
                 </div>
               </div>
-              <div class="flex items-start space-x-3">
-                <i class="fas fa-check-circle text-2xl flex-shrink-0 mt-1"></i>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
                 <div>
-                  <h3 class="font-bold mb-1">Fast Delivery</h3>
-                  <p class="text-yellow-50">Quick turnaround times without compromising quality.</p>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Fast Delivery</h3>
+                  <p class="text-yellow-50 text-xs">Quick turnaround times without compromising quality.</p>
                 </div>
               </div>
-              <div class="flex items-start space-x-3">
-                <i class="fas fa-check-circle text-2xl flex-shrink-0 mt-1"></i>
+              <div class="flex items-start space-x-2">
+                <i class="fas fa-check-circle text-sm md:text-base flex-shrink-0 mt-1"></i>
                 <div>
-                  <h3 class="font-bold mb-1">Local Presence</h3>
-                  <p class="text-yellow-50">Proudly serving Jaipur and Rajasthan with dedicated local service.</p>
+                  <h3 class="font-bold mb-0.5 text-xs md:text-sm">Local Presence</h3>
+                  <p class="text-yellow-50 text-xs">Proudly serving Jaipur and Rajasthan with dedicated local service.</p>
                 </div>
               </div>
             </div>
@@ -1114,45 +1258,80 @@ async function loadReviews() {
     
     if (reviews.length === 0) {
       reviewsList.innerHTML = `
-        <div class="text-center py-12 bg-gray-50 rounded-lg">
-          <i class="fas fa-comments text-6xl text-gray-300 mb-4"></i>
-          <p class="text-xl text-gray-500">No reviews yet. Be the first to review!</p>
+        <div class="text-center py-8 md:py-12 bg-gradient-to-br from-yellow-50 via-orange-50 to-yellow-50 rounded-xl md:rounded-2xl border border-dashed border-yellow-300 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-24 h-24 md:w-32 md:h-32 bg-yellow-200 rounded-full opacity-20 blur-2xl"></div>
+          <div class="absolute bottom-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-orange-200 rounded-full opacity-20 blur-2xl"></div>
+          <div class="relative z-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full shadow-lg mb-3 md:mb-4">
+              <i class="fas fa-comments text-white text-3xl md:text-4xl"></i>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">No Reviews Yet!</h3>
+            <p class="text-sm md:text-base text-gray-600 mb-3 px-4">Be the first to share your experience</p>
+            <div class="flex items-center justify-center space-x-1">
+              <i class="fas fa-star text-yellow-400 text-lg md:text-xl"></i>
+              <i class="fas fa-star text-yellow-400 text-lg md:text-xl"></i>
+              <i class="fas fa-star text-yellow-400 text-lg md:text-xl"></i>
+              <i class="fas fa-star text-yellow-400 text-lg md:text-xl"></i>
+              <i class="fas fa-star text-yellow-400 text-lg md:text-xl"></i>
+            </div>
+          </div>
         </div>
       `;
       return;
     }
     
     reviewsList.innerHTML = `
-      <div class="mb-6">
-        <h3 class="text-2xl font-bold text-gray-900">Recent Reviews (${reviews.length})</h3>
+      <div class="mb-4 md:mb-6 text-center">
+        <div class="inline-flex items-center space-x-2 md:space-x-3 bg-gradient-to-r from-yellow-100 to-orange-100 px-4 py-2 md:px-6 md:py-3 rounded-full shadow-md">
+          <i class="fas fa-comments text-yellow-600 text-lg md:text-xl"></i>
+          <h3 class="text-base md:text-xl font-bold text-gray-900">Recent Reviews</h3>
+          <span class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold">${reviews.length}</span>
+        </div>
       </div>
       ${reviews.map(review => `
-        <div class="bg-gray-50 rounded-lg p-6 shadow hover:shadow-lg transition">
-          <div class="flex items-start justify-between mb-4">
-            <div class="flex items-center space-x-4">
-              <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
-                <i class="fas fa-user text-white text-xl"></i>
-              </div>
-              <div>
-                <h4 class="font-bold text-gray-900">${escapeHtml(review.name)}</h4>
-                <div class="flex items-center space-x-2">
-                  <div class="flex">
-                    ${Array.from({length: 5}, (_, i) => `
-                      <i class="fas fa-star ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'} text-sm"></i>
-                    `).join('')}
-                  </div>
-                  <span class="text-sm text-gray-500">
-                    ${new Date(review.createdAt).toLocaleDateString('en-IN', { 
-                      year: 'numeric', 
-                      month: 'short', 
-                      day: 'numeric' 
-                    })}
-                  </span>
+        <div class="bg-white rounded-xl md:rounded-2xl p-3 md:p-5 shadow-md hover:shadow-xl transition-all duration-300 border border-yellow-200 hover:border-yellow-300 transform hover:-translate-y-1 relative overflow-hidden group">
+          <!-- Decorative quote mark -->
+          <div class="absolute top-2 right-2 md:top-4 md:right-4 opacity-5 md:opacity-10 group-hover:opacity-20 transition">
+            <i class="fas fa-quote-right text-4xl md:text-5xl text-yellow-400"></i>
+          </div>
+          
+          <div class="flex items-start space-x-3 mb-3 relative z-10">
+            <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-md flex-shrink-0 ring-2 md:ring-3 ring-yellow-100">
+              <i class="fas fa-user text-white text-sm md:text-base"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between mb-1.5">
+                <h4 class="font-bold text-gray-900 text-sm md:text-base truncate pr-2">${escapeHtml(review.name)}</h4>
+                <div class="flex items-center space-x-0.5 bg-gradient-to-r from-yellow-400 to-orange-400 px-2 py-0.5 md:px-2.5 md:py-1 rounded-full shadow-sm flex-shrink-0">
+                  ${Array.from({length: 5}, (_, i) => `
+                    <i class="fas fa-star ${i < review.rating ? 'text-white' : 'text-yellow-200'} text-xs"></i>
+                  `).join('')}
                 </div>
+              </div>
+              <div class="flex items-center space-x-1.5 text-xs text-gray-500">
+                <i class="fas fa-calendar-alt text-yellow-500"></i>
+                <span class="font-medium">
+                  ${new Date(review.createdAt).toLocaleDateString('en-IN', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </span>
+                <span class="text-yellow-500">•</span>
+                <i class="fas fa-check-circle text-green-500"></i>
+                <span class="text-green-600 font-medium">Verified</span>
               </div>
             </div>
           </div>
-          <p class="text-gray-700 leading-relaxed">${escapeHtml(review.message)}</p>
+          
+          <div class="relative z-10">
+            <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3 border-l-2 md:border-l-3 border-yellow-400">
+              <p class="text-gray-700 leading-relaxed text-xs md:text-sm">${escapeHtml(review.message)}</p>
+            </div>
+          </div>
+          
+          <!-- Bottom decorative element -->
+          <div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 opacity-0 group-hover:opacity-100 transition"></div>
         </div>
       `).join('')}
     `;

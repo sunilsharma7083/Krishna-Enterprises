@@ -46,26 +46,46 @@ function displayProducts(products) {
   if (!gridElement) return;
   
   gridElement.innerHTML = products.map(product => `
-    <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer" onclick="loadProductDetail('${product._id}')">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer group" onclick="loadProductDetail('${product._id}')">
       <div class="relative">
         <img src="${product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/400x400?text=Trophy'}" 
              alt="${product.title}" 
-             class="w-full h-64 object-cover"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
              onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=Trophy+Image';">
-        ${product.featured ? '<span class="absolute top-2 right-2 bg-yellow-500 text-gray-900 text-xs font-bold px-3 py-1 rounded-full">Featured</span>' : ''}
+        ${product.featured ? '<span class="absolute top-2 right-2 bg-yellow-500 text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow-lg">⭐ Featured</span>' : ''}
         ${!product.inStock ? '<span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">Out of Stock</span>' : ''}
       </div>
       <div class="p-5">
         <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">${product.title}</h3>
         <p class="text-sm text-gray-500 mb-3">${product.category}</p>
-        <div class="flex items-center justify-between">
+        
+        <!-- Rating Display -->
+        <div class="flex items-center mb-3">
+          <div class="flex items-center space-x-1">
+            <i class="fas fa-star text-yellow-400 text-sm"></i>
+            <i class="fas fa-star text-yellow-400 text-sm"></i>
+            <i class="fas fa-star text-yellow-400 text-sm"></i>
+            <i class="fas fa-star text-yellow-400 text-sm"></i>
+            <i class="fas fa-star text-gray-300 text-sm"></i>
+          </div>
+          <span class="text-xs text-gray-500 ml-2">(4.0)</span>
+        </div>
+        
+        <div class="flex items-center justify-between mb-3">
           <span class="text-2xl font-bold text-yellow-600">${formatCurrency(product.price)}</span>
           <button onclick="event.stopPropagation(); addToCartQuick('${product._id}')" 
-                  class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition"
+                  class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold px-4 py-2 rounded-lg transition shadow-md hover:shadow-lg"
                   ${!product.inStock ? 'disabled' : ''}>
             <i class="fas fa-cart-plus"></i>
           </button>
         </div>
+        
+        <!-- Review Button -->
+        <button onclick="event.stopPropagation(); window.location.hash = '#home'; setTimeout(() => document.getElementById('review-form').scrollIntoView({behavior: 'smooth'}), 300);" 
+                class="w-full bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-white font-semibold py-2 px-4 rounded-lg transition flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
+          <i class="fas fa-star"></i>
+          <span class="text-sm">Write a Review</span>
+        </button>
       </div>
     </div>
   `).join('');
