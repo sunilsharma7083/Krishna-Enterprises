@@ -24,26 +24,35 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  limits: { 
+    fileSize: 10 * 1024 * 1024, // 10MB limit (increased from 5MB)
+    files: 5 // Maximum 5 files
+  },
   fileFilter: (req, file, cb) => {
     console.log('📸 File upload attempt:', {
       originalname: file.originalname,
       mimetype: file.mimetype,
-      size: file.size
+      size: file.size ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown'
     });
     
-    const allowedTypes = /jpeg|jpg|png|gif|webp/;
+    const allowedTypes = /jpeg|jpg|png|gif|webp|bmp/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
     
-    console.log('🔍 Validation:', { extname, mimetype });
+    console.log('🔍 Validation:', { 
+      extname, 
+      mimetype,
+      extension: path.extname(file.originalname).toLowerCase(),
+      mimeType: file.mimetype
+    });
     
     if (mimetype && extname) {
-      console.log('✅ File accepted');
+      console.log('✅ File accepted:', file.originalname);
       return cb(null, true);
     } else {
       console.log('❌ File rejected - Only image files allowed');
-      cb(new Error('Only image files (JPEG, JPG, PNG, GIF, WEBP) are allowed!'));
+      console.log('   Allowed formats: JPEG, JPG, PNG, GIF, WEBP, BMP');
+      cb(new Error('Only image files (JPEG, JPG, PNG, GIF, WEBP, BMP) are allowed!'));
     }
   }
 });
@@ -98,7 +107,30 @@ router.get('/:id', async (req, res) => {
 // @route   POST /api/products
 // @desc    Create new product (Admin only)
 // @access  Private
-router.post('/', upload.array('images', 5), async (req, res) => {
+router.post('/', (req, res, next) => {
+  upload.array('images', 5)(req, res, (err) => {
+    if (err) {
+      console.error('❌ Upload error:', err.message);
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'File size too large! Maximum size is 10MB per image.' 
+        });
+      }
+      if (err.code === 'LIMIT_FILE_COUNT') {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Too many files! Maximum 5 images allowed.' 
+        });
+      }
+      return res.status(400).json({ 
+        success: false, 
+        message: err.message || 'Error uploading images' 
+      });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
     // Check admin authentication
     if (!req.session.isAdmin) {
@@ -107,25 +139,45 @@ router.post('/', upload.array('images', 5), async (req, res) => {
 
     const { title, category, price, description, featured, inStock } = req.body;
     
-    // Get uploaded image paths
-    const images = req.files ? req.files.map(file => `/uploads/products/${file.filename}`) : [];
-    
-    console.log('📸 Creating product with images:', images);
+    console.log('📦 Request body:', { title, category, price, description });
     console.log('📁 Files received:', req.files?.length || 0);
+    
+    // Validation
+    if (!title || !category) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Title and category are required' 
+      });
+    }
+    
+    // Get uploaded image paths
+    const images = req.files ? req.files.map(file => {
+      console.log('📸 Processing file:', file.filename, `(${(file.size / 1024).toFixed(2)} KB)`);
+      return `/uploads/products/${file.filename}`;
+    }) : [];
+    
+    console.log('📸 Total images to save:', images.length);
+    console.log('�️  Image paths:', images);
 
     const product = new Product({
       title,
       category,
-      price: parseFloat(price),
-      description,
+      price: price ? parseFloat(price) : 0,
+      description: description || '',
       images,
       featured: featured === 'true' || featured === true,
       inStock: inStock !== 'false' && inStock !== false
     });
 
     await product.save();
-    console.log('✅ Product saved with images:', product.images);
-    res.status(201).json({ success: true, data: product, message: 'Product created successfully' });
+    console.log('✅ Product saved successfully with ID:', product._id);
+    console.log('✅ Images saved:', product.images);
+    
+    res.status(201).json({ 
+      success: true, 
+      data: product, 
+      message: `Product created successfully with ${images.length} image(s)!` 
+    });
   } catch (error) {
     console.error('❌ Error creating product:', error);
     res.status(400).json({ success: false, message: error.message });
@@ -135,7 +187,30 @@ router.post('/', upload.array('images', 5), async (req, res) => {
 // @route   PUT /api/products/:id
 // @desc    Update product (Admin only)
 // @access  Private
-router.put('/:id', upload.array('images', 5), async (req, res) => {
+router.put('/:id', (req, res, next) => {
+  upload.array('images', 5)(req, res, (err) => {
+    if (err) {
+      console.error('❌ Upload error:', err.message);
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'File size too large! Maximum size is 10MB per image.' 
+        });
+      }
+      if (err.code === 'LIMIT_FILE_COUNT') {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Too many files! Maximum 5 images allowed.' 
+        });
+      }
+      return res.status(400).json({ 
+        success: false, 
+        message: err.message || 'Error uploading images' 
+      });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
     // Check admin authentication
     if (!req.session.isAdmin) {
@@ -151,23 +226,28 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
     const { title, category, price, description, featured, inStock, existingImages } = req.body;
     
     console.log('📝 Updating product:', product.title);
-    console.log('📁 Files received:', req.files?.length || 0);
-    console.log('🖼️ Existing images:', existingImages);
+    console.log('📁 New files received:', req.files?.length || 0);
+    console.log('🖼️  Existing images to keep:', existingImages);
     
     // Handle existing images
     let images = [];
     if (existingImages) {
       images = Array.isArray(existingImages) ? existingImages : [existingImages];
+      console.log('✅ Keeping', images.length, 'existing images');
     }
 
     // Add new uploaded images
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map(file => `/uploads/products/${file.filename}`);
+      const newImages = req.files.map(file => {
+        console.log('📸 New file uploaded:', file.filename, `(${(file.size / 1024).toFixed(2)} KB)`);
+        return `/uploads/products/${file.filename}`;
+      });
       images = [...images, ...newImages];
-      console.log('📸 New images added:', newImages);
+      console.log('✅ Added', newImages.length, 'new images');
     }
     
-    console.log('🎯 Final images array:', images);
+    console.log('🎯 Final images count:', images.length);
+    console.log('🖼️  Final image paths:', images);
 
     // Update product fields
     product.title = title || product.title;
@@ -179,9 +259,16 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
     product.inStock = inStock !== 'false' && inStock !== false;
 
     await product.save();
-    console.log('✅ Product updated with images:', product.images);
-    res.json({ success: true, data: product, message: 'Product updated successfully' });
+    console.log('✅ Product updated successfully with ID:', product._id);
+    console.log('✅ Images saved:', product.images);
+    
+    res.json({ 
+      success: true, 
+      data: product, 
+      message: `Product updated successfully with ${images.length} image(s)!` 
+    });
   } catch (error) {
+    console.error('❌ Error updating product:', error);
     res.status(400).json({ success: false, message: error.message });
   }
 });

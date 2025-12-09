@@ -78,11 +78,17 @@ async function loadProducts() {
             
             <div>
               <label class="block text-gray-700 font-semibold mb-2">Product Images</label>
-              <input type="file" id="product-images" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,.jpeg,.jpg,.png,.gif,.webp" multiple
+              <input type="file" id="product-images" accept="image/*" multiple
                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <p class="text-sm text-gray-500 mt-2">
-                <i class="fas fa-info-circle text-blue-500"></i>
-                Supported formats: JPEG, JPG, PNG, GIF, WEBP (max 5 images, 5MB each)
+              <p class="text-sm text-gray-600 mt-2 bg-blue-50 p-3 rounded-lg">
+                <i class="fas fa-info-circle text-blue-600"></i>
+                <strong>Supported formats:</strong> JPEG, JPG, PNG, GIF, WEBP, BMP
+                <br>
+                <i class="fas fa-check-circle text-green-600"></i>
+                <strong>Maximum:</strong> 5 images, 10MB per image
+                <br>
+                <i class="fas fa-image text-purple-600"></i>
+                <strong>Tip:</strong> Images of any size will be accepted (variable size supported)
               </p>
               <div id="existing-images" class="mt-4 grid grid-cols-4 gap-2"></div>
             </div>
@@ -275,10 +281,50 @@ async function handleProductSubmit(e) {
   formData.append('featured', document.getElementById('product-featured').checked);
   formData.append('inStock', document.getElementById('product-instock').checked);
   
-  // Add new images
+  // Add new images with validation
   const imageFiles = document.getElementById('product-images').files;
+  const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+  const maxFiles = 5;
+  
+  console.log('📸 Validating', imageFiles.length, 'image(s)...');
+  
+  // Check file count
+  if (imageFiles.length > maxFiles) {
+    showToast(`Too many files! Maximum ${maxFiles} images allowed.`, 'error');
+    submitButton.disabled = false;
+    submitButton.innerHTML = originalButtonText;
+    return;
+  }
+  
+  // Check file sizes and types
   for (let i = 0; i < imageFiles.length; i++) {
-    formData.append('images', imageFiles[i]);
+    const file = imageFiles[i];
+    const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+    
+    console.log(`📁 File ${i + 1}: ${file.name} (${fileSizeMB} MB, ${file.type})`);
+    
+    // Check file size
+    if (file.size > maxSize) {
+      showToast(`File "${file.name}" is too large (${fileSizeMB} MB). Maximum size is 10MB.`, 'error');
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonText;
+      return;
+    }
+    
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      showToast(`File "${file.name}" is not an image file.`, 'error');
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonText;
+      return;
+    }
+    
+    console.log(`✅ File ${i + 1} validated successfully`);
+    formData.append('images', file);
+  }
+  
+  if (imageFiles.length > 0) {
+    console.log(`✅ All ${imageFiles.length} file(s) validated and ready for upload`);
   }
   
   // Add existing images (for edit mode)
