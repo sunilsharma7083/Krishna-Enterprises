@@ -49,9 +49,9 @@ function getImageUrl(imagePath) {
     return imagePath;
   }
   
-  // If relative path, prepend API base URL (without /api)
-  const baseUrl = API_BASE.replace('/api', '');
-  return `${baseUrl}${imagePath}`;
+  // Always use Render backend for images (where they are stored)
+  const backendUrl = 'https://krishna-enterprises-9oup.onrender.com';
+  return `${backendUrl}${imagePath}`;
 }
 
 // Display products in grid

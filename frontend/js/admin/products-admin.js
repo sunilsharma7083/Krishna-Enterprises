@@ -3,6 +3,20 @@
 let allProducts = [];
 let editingProductId = null;
 
+// Helper function to get full image URL
+function getImageUrl(imagePath) {
+  if (!imagePath) return 'https://via.placeholder.com/100';
+  
+  // If already a full URL (starts with http/https), return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // Always use Render backend for images (where they are stored)
+  const backendUrl = 'https://krishna-enterprises-9oup.onrender.com';
+  return `${backendUrl}${imagePath}`;
+}
+
 // Load products page
 async function loadProducts() {
   updateSidebarActive('Products');
@@ -167,7 +181,7 @@ async function loadProductsList() {
                 ${allProducts.map(product => `
                   <tr class="border-b hover:bg-gray-50">
                     <td class="py-3 px-4">
-                      <img src="${product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/100'}" 
+                      <img src="${getImageUrl(product.images && product.images.length > 0 ? product.images[0] : null)}" 
                            alt="${product.title}" 
                            class="w-16 h-16 object-cover rounded">
                     </td>
@@ -236,7 +250,7 @@ async function editProduct(productId) {
   if (product.images && product.images.length > 0) {
     existingImagesContainer.innerHTML = product.images.map((img, index) => `
       <div class="relative">
-        <img src="${img}" alt="Product image" class="w-full h-24 object-cover rounded">
+        <img src="${getImageUrl(img)}" alt="Product image" class="w-full h-24 object-cover rounded">
         <button type="button" onclick="removeExistingImage(${index})" 
                 class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
           <i class="fas fa-times"></i>
