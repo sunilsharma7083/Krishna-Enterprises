@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Debug - Krishna Enterprises</title>
+  <script src="js/config.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 20px; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #1f2937;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+    .api-info {
+      background: #f3f4f6;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      border-left: 4px solid #fbbf24;
+    }
+    .api-info strong { color: #1f2937; }
+    .refresh-btn {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+      transition: all 0.3s;
+    }
+    .refresh-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.6);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 25px;
+    }
+    .product-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      background: #fafafa;
+      transition: all 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      border-color: #fbbf24;
+    }
+    .product-card h3 {
+      margin: 0 0 15px 0;
+      color: #1f2937;
+      font-size: 20px;
+      border-bottom: 2px solid #fbbf24;
+      padding-bottom: 10px;
+    }
+    .image-box {
+      width: 100%;
+      height: 250px;
+      background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      position: relative;
+      border: 2px solid #d1d5db;
+    }
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 10px;
+    }
+    .image-error {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ef4444;
+      text-align: center;
+      font-weight: bold;
+      font-size: 48px;
+    }
+    .info-section {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 13px;
+      border: 1px solid #e5e7eb;
+    }
+    .info-section strong {
+      color: #1f2937;
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .info-section code {
+      display: block;
+      background: #f3f4f6;
+      padding: 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+      color: #059669;
+      margin-top: 5px;
+    }
+    .status {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .status.success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+    .status.error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+    .status.loading {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: white;
+    }
+    .console {
+      margin-top: 30px;
+      padding: 20px;
+      background: #1f2937;
+      color: #10b981;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      max-height: 400px;
+      overflow-y: auto;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .console h2 {
+      color: #fbbf24;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    .console div {
+      margin: 5px 0;
+      padding: 3px 0;
+      border-bottom: 1px solid #374151;
+    }
+    .console .error { color: #ef4444; }
+    .console .success { color: #10b981; }
+    .console .info { color: #60a5fa; }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 20px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🖼️ Image Debug Tool</h1>
+    <p style="color: #6b7280; margin-bottom: 20px;">Complete diagnostic tool for troubleshooting image display issues</p>
+    
+    <div class="api-info">
+      <strong>🔗 API Base URL:</strong> <span id="api-base"></span><br>
+      <strong>📊 Products Loaded:</strong> <span id="product-count">0</span>
+    </div>
+    
+    <button class="refresh-btn" onclick="loadProducts()">
+      🔄 Refresh & Test All Images
+    </button>
+    
+    <div id="products-container" class="products-grid"></div>
+    
+    <div class="console" id="console">
+      <h2>📋 Console Logs</h2>
+      <div id="console-content"></div>
+    </div>
+  </div>
+
+  <script>
+    // Helper function to get full image URL
+    function getImageUrl(imagePath) {
+      if (!imagePath) {
+        logToConsole('❌ No image path provided', 'error');
+        return 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop';
+      }
+      
+      if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        logToConsole('✅ Using CDN URL: ' + imagePath.substring(0, 60) + '...', 'info');
+        return imagePath;
+      }
+      
+      const baseUrl = API_BASE.replace('/api', '');
+      const fullUrl = `${baseUrl}${imagePath}`;
+      logToConsole('🔗 Converting: ' + imagePath + ' → ' + fullUrl, 'info');
+      return fullUrl;
+    }
+
+    function logToConsole(message, type = 'info') {
+      const consoleContent = document.getElementById('console-content');
+      const logEntry = document.createElement('div');
+      logEntry.className = type;
+      logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      consoleContent.appendChild(logEntry);
+      consoleContent.scrollTop = consoleContent.scrollHeight;
+      console.log(message);
+    }
+
+    async function loadProducts() {
+      const container = document.getElementById('products-container');
+      const apiBaseSpan = document.getElementById('api-base');
+      const countSpan = document.getElementById('product-count');
+      const consoleContent = document.getElementById('console-content');
+      
+      apiBaseSpan.textContent = API_BASE;
+      consoleContent.innerHTML = '';
+      container.innerHTML = '<div class="loading">Loading products...</div>';
+      
+      logToConsole('========================================', 'info');
+      logToConsole('🚀 Starting Image Diagnostic Test', 'success');
+      logToConsole('========================================', 'info');
+      logToConsole('📡 API Endpoint: ' + API_BASE + '/products', 'info');
+      
+      try {
+        const response = await fetch(`${API_BASE}/products`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        const products = result.data || [];
+        
+        logToConsole('✅ API Response: SUCCESS', 'success');
+        logToConsole('📦 Products Found: ' + products.length, 'success');
+        countSpan.textContent = products.length;
+        
+        if (products.length === 0) {
+          container.innerHTML = '<div class="loading">No products found in database</div>';
+          return;
+        }
+        
+        container.innerHTML = products.map((product, index) => {
+          const originalPath = product.images && product.images[0] ? product.images[0] : null;
+          const fullUrl = getImageUrl(originalPath);
+          const productId = product._id || `product-${index}`;
+          
+          return `
+            <div class="product-card">
+              <h3>${product.title || 'Untitled Product'}</h3>
+              
+              <div class="image-box">
+                <img 
+                  id="img-${productId}"
+                  src="${fullUrl}" 
+                  alt="${product.title}"
+                  onload="imageLoaded('${productId}', '${fullUrl}')"
+                  onerror="imageError('${productId}', '${fullUrl}')">
+                <div class="image-error" id="error-${productId}" style="display: none;">
+                  ❌
+                </div>
+              </div>
+              
+              <div class="info-section">
+                <strong>📁 Original Path:</strong>
+                <code>${originalPath || 'NO IMAGE'}</code>
+              </div>
+              
+              <div class="info-section">
+                <strong>🌐 Full URL:</strong>
+                <code>${fullUrl}</code>
+              </div>
+              
+              <span class="status loading" id="status-${productId}">
+                ⏳ Loading...
+              </span>
+            </div>
+          `;
+        }).join('');
+        
+        logToConsole('✅ All products rendered in DOM', 'success');
+        logToConsole('⏳ Waiting for images to load...', 'info');
+        
+      } catch (error) {
+        logToConsole('❌ ERROR: ' + error.message, 'error');
+        container.innerHTML = `
+          <div class="loading" style="color: #ef4444;">
+            <h3>Error Loading Products</h3>
+            <p>${error.message}</p>
+          </div>
+        `;
+      }
+    }
+
+    function imageLoaded(productId, url) {
+      const statusEl = document.getElementById(`status-${productId}`);
+      if (statusEl) {
+        statusEl.className = 'status success';
+        statusEl.innerHTML = '✅ Image Loaded';
+      }
+      logToConsole(`✅ SUCCESS: Image loaded for ${productId}`, 'success');
+    }
+
+    function imageError(productId, url) {
+      const statusEl = document.getElementById(`status-${productId}`);
+      const errorEl = document.getElementById(`error-${productId}`);
+      const imgEl = document.getElementById(`img-${productId}`);
+      
+      if (statusEl) {
+        statusEl.className = 'status error';
+        statusEl.innerHTML = '❌ Failed to Load';
+      }
+      if (errorEl) {
+        errorEl.style.display = 'block';
+      }
+      
+      logToConsole(`❌ FAILED: Image failed for ${productId}`, 'error');
+      logToConsole(`   URL: ${url}`, 'error');
+      
+      // Try to get more info
+      fetch(url, { method: 'HEAD' })
+        .then(response => {
+          logToConsole(`   Server response: HTTP ${response.status}`, 'error');
+        })
+        .catch(err => {
+          logToConsole(`   Network error: ${err.message}`, 'error');
+        });
+    }
+
+    // Auto-load on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProducts();
+    });
+  </script>
+</body>
+</html>
