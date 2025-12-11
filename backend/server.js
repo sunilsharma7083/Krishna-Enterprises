@@ -19,7 +19,8 @@ app.use(cors({
     'http://localhost:5500',  // Live Server frontend
     'http://127.0.0.1:5500',  // Alternative localhost
     'https://krishna-enterprises-theta.vercel.app',
-    'https://krishna-enterprises-9oup.onrender.com'
+    'https://krishna-enterprises-9oup.onrender.com',
+    'https://www.krishnaenterprises.info'
   ],
   credentials: true
 }));
