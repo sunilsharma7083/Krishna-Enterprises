@@ -1,5 +1,19 @@
 // Orders Management
 
+// Helper function to get full image URL
+function getImageUrl(imagePath) {
+  if (!imagePath) return 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop';
+  
+  // If already a full URL (starts with http/https), return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // Always use Render backend for images (where they are stored)
+  const backendUrl = 'https://krishna-enterprises-9oup.onrender.com';
+  return `${backendUrl}${imagePath}`;
+}
+
 // Load checkout page
 function loadCheckoutPage() {
   if (cart.length === 0) {
@@ -15,7 +29,7 @@ function loadCheckoutPage() {
   const cartItemsHTML = cart.map(item => `
     <div class="flex items-center justify-between py-3 border-b">
       <div class="flex items-center space-x-3">
-        <img src="${item.image}" alt="${item.title}" class="w-16 h-16 object-cover rounded" onerror="this.onerror=null; this.src='https://via.placeholder.com/100x100?text=Trophy';">
+        <img src="${getImageUrl(item.image)}" alt="${item.title}" class="w-16 h-16 object-cover rounded" onerror="this.onerror=null; this.src='https://via.placeholder.com/100x100?text=Trophy';">
         <div>
           <p class="font-semibold text-gray-900">${item.title}</p>
           <p class="text-sm text-gray-500">Qty: ${item.quantity}</p>
