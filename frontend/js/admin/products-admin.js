@@ -92,18 +92,48 @@ async function loadProducts() {
             
             <div>
               <label class="block text-gray-700 font-semibold mb-2">Product Images</label>
-              <input type="file" id="product-images" accept="image/*" multiple
-                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <p class="text-sm text-gray-600 mt-2 bg-blue-50 p-3 rounded-lg">
-                <i class="fas fa-info-circle text-blue-600"></i>
-                <strong>Supported formats:</strong> JPEG, JPG, PNG, GIF, WEBP, BMP
-                <br>
-                <i class="fas fa-check-circle text-green-600"></i>
-                <strong>Maximum:</strong> 5 images, 10MB per image
-                <br>
-                <i class="fas fa-image text-purple-600"></i>
-                <strong>Tip:</strong> Images of any size will be accepted (variable size supported)
-              </p>
+              
+              <!-- Image URL Input (NEW FEATURE) -->
+              <div class="mb-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
+                <label class="block text-green-800 font-semibold mb-2">
+                  <i class="fas fa-link mr-2"></i>Add Image URL (Recommended)
+                </label>
+                <div class="flex gap-2">
+                  <input type="text" id="product-image-url" 
+                         class="flex-1 px-4 py-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                         placeholder="Paste image URL (e.g., https://example.com/image.jpg)">
+                  <button type="button" onclick="addImageUrl()" 
+                          class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    <i class="fas fa-plus"></i> Add
+                  </button>
+                </div>
+                <p class="text-sm text-green-700 mt-2">
+                  <i class="fas fa-info-circle"></i>
+                  <strong>Tip:</strong> Use image URLs from Google Images, Unsplash, or any website. Right-click an image → "Copy image address"
+                </p>
+              </div>
+              
+              <!-- OR Divider -->
+              <div class="flex items-center my-4">
+                <div class="flex-1 border-t border-gray-300"></div>
+                <span class="px-4 text-gray-500 font-semibold">OR</span>
+                <div class="flex-1 border-t border-gray-300"></div>
+              </div>
+              
+              <!-- File Upload -->
+              <div class="p-4 bg-blue-50 border border-blue-300 rounded-lg">
+                <label class="block text-blue-800 font-semibold mb-2">
+                  <i class="fas fa-upload mr-2"></i>Upload Image Files
+                </label>
+                <input type="file" id="product-images" accept="image/*" multiple
+                       class="w-full px-4 py-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <p class="text-sm text-blue-700 mt-2">
+                  <i class="fas fa-info-circle"></i>
+                  <strong>Supported:</strong> JPEG, PNG, GIF, WEBP | <strong>Max:</strong> 5 images, 10MB each
+                </p>
+              </div>
+              
+              <!-- Images Preview -->
               <div id="existing-images" class="mt-4 grid grid-cols-4 gap-2"></div>
             </div>
             
@@ -227,7 +257,53 @@ function showAddProductForm() {
   document.getElementById('modal-title').textContent = 'Add New Product';
   document.getElementById('product-form').reset();
   document.getElementById('existing-images').innerHTML = '';
+  document.getElementById('product-image-url').value = '';
   document.getElementById('product-modal').classList.remove('hidden');
+}
+
+// Add image URL to product
+function addImageUrl() {
+  const urlInput = document.getElementById('product-image-url');
+  const imageUrl = urlInput.value.trim();
+  
+  if (!imageUrl) {
+    showToast('Please enter an image URL', 'error');
+    return;
+  }
+  
+  // Basic URL validation
+  if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+    showToast('Please enter a valid URL starting with http:// or https://', 'error');
+    return;
+  }
+  
+  // Check if it looks like an image URL
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.svg'];
+  const hasImageExtension = imageExtensions.some(ext => imageUrl.toLowerCase().includes(ext));
+  
+  if (!hasImageExtension && !imageUrl.includes('unsplash') && !imageUrl.includes('images') && !imageUrl.includes('photo')) {
+    if (!confirm('This URL might not be an image. Add it anyway?')) {
+      return;
+    }
+  }
+  
+  // Add to existing images container
+  const container = document.getElementById('existing-images');
+  const imageDiv = document.createElement('div');
+  imageDiv.className = 'relative';
+  imageDiv.innerHTML = `
+    <img src="${imageUrl}" alt="Product image" class="w-full h-24 object-cover rounded" 
+         onerror="this.style.border='2px solid red'; this.alt='Failed to load';">
+    <button type="button" onclick="this.parentElement.remove()" 
+            class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+      <i class="fas fa-times"></i>
+    </button>
+    <input type="hidden" name="imageUrls[]" value="${imageUrl}">
+  `;
+  
+  container.appendChild(imageDiv);
+  urlInput.value = '';
+  showToast('Image URL added successfully!', 'success');
 }
 
 // Edit product
@@ -347,6 +423,16 @@ async function handleProductSubmit(e) {
     existingImages.forEach(input => {
       formData.append('existingImages', input.value);
     });
+  }
+  
+  // Add image URLs (NEW FEATURE)
+  const imageUrls = document.querySelectorAll('input[name="imageUrls[]"]');
+  imageUrls.forEach(input => {
+    formData.append('imageUrls', input.value);
+  });
+  
+  if (imageUrls.length > 0) {
+    console.log(`✅ Adding ${imageUrls.length} image URL(s)`);
   }
   
   try {

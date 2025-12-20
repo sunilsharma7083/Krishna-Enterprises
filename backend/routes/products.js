@@ -157,6 +157,17 @@ router.post('/', (req, res, next) => {
     }) : [];
     
     console.log('📸 Total images to save:', images.length);
+    // Add image URLs if provided (NEW FEATURE)
+    if (req.body.imageUrls) {
+      const imageUrls = Array.isArray(req.body.imageUrls) ? req.body.imageUrls : [req.body.imageUrls];
+      imageUrls.forEach(url => {
+        if (url && url.trim()) {
+          console.log('🔗 Adding image URL:', url);
+          images.push(url.trim());
+        }
+      });
+    }
+    
     console.log('�️  Image paths:', images);
 
     const product = new Product({
@@ -257,6 +268,17 @@ router.put('/:id', (req, res, next) => {
     product.images = images.length > 0 ? images : product.images;
     product.featured = featured === 'true' || featured === true;
     product.inStock = inStock !== 'false' && inStock !== false;
+    // Add image URLs if provided (NEW FEATURE)
+    if (req.body.imageUrls) {
+      const imageUrls = Array.isArray(req.body.imageUrls) ? req.body.imageUrls : [req.body.imageUrls];
+      imageUrls.forEach(url => {
+        if (url && url.trim()) {
+          console.log('🔗 Adding image URL:', url);
+          images.push(url.trim());
+        }
+      });
+    }
+    
 
     await product.save();
     console.log('✅ Product updated successfully with ID:', product._id);
