@@ -1,0 +1,47 @@
+🔐 Logging in as admin...
+✅ Admin login successful
+   Session established
+
+📸 Starting product upload process...
+
+============================================================
+
+📤 Uploading: FIFA World Cup Trophy Award
+❌ Error uploading FIFA World Cup Trophy Award: Unauthorized
+
+📤 Uploading: Golden Round Trophy Plaque
+❌ Error uploading Golden Round Trophy Plaque: Unauthorized
+
+📤 Uploading: Mahila Shakti Samman Award 2025
+❌ Error uploading Mahila Shakti Samman Award 2025: Unauthorized
+
+📤 Uploading: Samaj Nagar Mahasamman Award
+❌ Error uploading Samaj Nagar Mahasamman Award: Unauthorized
+
+📤 Uploading: Luxury Red Box Trophy Award
+❌ Error uploading Luxury Red Box Trophy Award: Unauthorized
+
+📤 Uploading: Krishna Enterprises Premium Shield
+❌ Error uploading Krishna Enterprises Premium Shield: Unauthorized
+
+📤 Uploading: Indo Nepal International Youth Festival Medal
+❌ Error uploading Indo Nepal International Youth Festival Medal: Unauthorized
+
+📤 Uploading: Tripp Foundation Religious Award
+❌ Error uploading Tripp Foundation Religious Award: Unauthorized
+
+📤 Uploading: Mahila Sashaktikaran Diwas Trophy Set
+❌ Error uploading Mahila Sashaktikaran Diwas Trophy Set: Unauthorized
+
+📤 Uploading: Mahila Samman 2025 Grand Trophy
+❌ Error uploading Mahila Samman 2025 Grand Trophy: Unauthorized
+
+📤 Uploading: Championship Trophy Collection
+❌ Error uploading Championship Trophy Collection: Unauthorized
+
+============================================================
+
+📊 Upload Summary:
+✅ Successful: 0
+❌ Failed: 11
+📦 Total: 11

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Load Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-image { margin: 20px 0; border: 2px solid #ddd; padding: 10px; }
+        .test-image img { max-width: 400px; display: block; margin: 10px 0; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Image Load Test - Krishna Enterprises</h1>
+    
+    <div class="test-image">
+        <h3>Test 1: Render Backend (Full URL)</h3>
+        <p>URL: <code>https://krishna-enterprises-9oup.onrender.com/uploads/products/product-1765439696817-8252779.jpeg</code></p>
+        <img src="https://krishna-enterprises-9oup.onrender.com/uploads/products/product-1765439696817-8252779.jpeg" 
+             alt="Test from Render"
+             onload="document.getElementById('test1').innerHTML = 'Status: <span class=success>✅ Loaded successfully</span>'"
+             onerror="document.getElementById('test1').innerHTML = 'Status: <span class=error>❌ Failed to load</span>'">
+        <p id="test1">Status: Loading...</p>
+    </div>
+    
+    <div class="test-image">
+        <h3>Test 2: Localhost Backend (Relative Path)</h3>
+        <p>URL: <code>http://localhost:3000/uploads/products/product-1765439696817-8252779.jpeg</code></p>
+        <img src="http://localhost:3000/uploads/products/product-1765439696817-8252779.jpeg" 
+             alt="Test from Localhost"
+             onload="document.getElementById('test2').innerHTML = 'Status: <span class=success>✅ Loaded successfully</span>'"
+             onerror="document.getElementById('test2').innerHTML = 'Status: <span class=error>❌ Failed to load</span>'">
+        <p id="test2">Status: Loading...</p>
+    </div>
+    
+    <div class="test-image">
+        <h3>Test 3: Unsplash (Fallback)</h3>
+        <p>URL: <code>https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop</code></p>
+        <img src="https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop" 
+             alt="Test Unsplash"
+             onload="document.getElementById('test3').innerHTML = 'Status: <span class=success>✅ Loaded successfully</span>'"
+             onerror="document.getElementById('test3').innerHTML = 'Status: <span class=error>❌ Failed to load</span>'">
+        <p id="test3">Status: Loading...</p>
+    </div>
+
+    <div class="test-image">
+        <h3>Test 4: JavaScript Image URL Function</h3>
+        <p id="test4-url">Generating URL...</p>
+        <img id="test4-img" alt="Test with getImageUrl">
+        <p id="test4">Status: Loading...</p>
+    </div>
+
+    <script>
+        // Simulate the getImageUrl function from products.js
+        function getImageUrl(imagePath) {
+            if (!imagePath) return 'https://images.unsplash.com/photo-1614292253918-c5c8d5ba1f1c?w=400&h=400&fit=crop';
+            
+            // If already a full URL (starts with http/https), return as is
+            if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                return imagePath;
+            }
+            
+            // Always use Render backend for images (where they are stored)
+            const backendUrl = 'https://krishna-enterprises-9oup.onrender.com';
+            return `${backendUrl}${imagePath}`;
+        }
+
+        // Test the function
+        const testPath = '/uploads/products/product-1765439696817-8252779.jpeg';
+        const generatedUrl = getImageUrl(testPath);
+        document.getElementById('test4-url').innerHTML = `URL: <code>${generatedUrl}</code>`;
+        
+        const img4 = document.getElementById('test4-img');
+        img4.src = generatedUrl;
+        img4.onload = function() {
+            document.getElementById('test4').innerHTML = 'Status: <span class="success">✅ Loaded successfully</span>';
+        };
+        img4.onerror = function() {
+            document.getElementById('test4').innerHTML = 'Status: <span class="error">❌ Failed to load</span>';
+        };
+
+        // Log to console
+        console.log('Testing image URL generation:');
+        console.log('Input:', testPath);
+        console.log('Output:', generatedUrl);
+    </script>
+</body>
+</html>

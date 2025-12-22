@@ -5,103 +5,57 @@ const path = require('path');
 const fs = require('fs');
 const Product = require('../models/Product');
 
-// Try to use Cloudinary if configured, otherwise use local storage
-let upload;
-let useCloudinary = false;
-
-try {
-  if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
-    const cloudinary = require('cloudinary').v2;
-    const { CloudinaryStorage } = require('multer-storage-cloudinary');
-    
-    // Configure Cloudinary
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET
-    });
-    
-    // Configure Cloudinary storage
-    const storage = new CloudinaryStorage({
-      cloudinary: cloudinary,
-      params: {
-        folder: 'krishna-enterprises/products',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'],
-        transformation: [
-          { width: 1200, height: 1200, crop: 'limit' },
-          { quality: 'auto' },
-          { fetch_format: 'auto' }
-        ]
-      }
-    });
-    
-    upload = multer({
-      storage: storage,
-      limits: { 
-        fileSize: 10 * 1024 * 1024,
-        files: 5
-      }
-    });
-    
-    useCloudinary = true;
-    console.log('✅ Cloudinary configured - Images will auto-upload to cloud storage!');
-  } else {
-    throw new Error('Cloudinary not configured');
-  }
-} catch (error) {
-  console.log('⚠️  Cloudinary not available, using local storage');
-  
-  // Fallback to local storage
-  const uploadDir = path.join(__dirname, '../uploads/products');
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-  }
-
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, 'product-' + uniqueSuffix + path.extname(file.originalname));
-    }
-  });
-
-  upload = multer({
-    storage: storage,
-    limits: { 
-      fileSize: 10 * 1024 * 1024,
-      files: 5
-    },
-    fileFilter: (req, file, cb) => {
-      console.log('📸 File upload attempt:', {
-        originalname: file.originalname,
-        mimetype: file.mimetype,
-        size: file.size ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown'
-      });
-      
-      const allowedTypes = /jpeg|jpg|png|gif|webp|bmp/;
-      const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-      const mimetype = allowedTypes.test(file.mimetype);
-      
-      console.log('🔍 Validation:', { 
-        extname, 
-        mimetype,
-        extension: path.extname(file.originalname).toLowerCase(),
-        mimeType: file.mimetype
-      });
-      
-      if (mimetype && extname) {
-        console.log('✅ File accepted:', file.originalname);
-        return cb(null, true);
-      } else {
-        console.log('❌ File rejected - Only image files allowed');
-        console.log('   Allowed formats: JPEG, JPG, PNG, GIF, WEBP, BMP');
-        cb(new Error('Only image files (JPEG, JPG, PNG, GIF, WEBP, BMP) are allowed!'));
-      }
-    }
-  });
+// Create uploads directory if it doesn't exist
+const uploadDir = path.join(__dirname, '../uploads/products');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
+
+// Configure multer for image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'product-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { 
+    fileSize: 10 * 1024 * 1024, // 10MB limit (increased from 5MB)
+    files: 5 // Maximum 5 files
+  },
+  fileFilter: (req, file, cb) => {
+    console.log('📸 File upload attempt:', {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown'
+    });
+    
+    const allowedTypes = /jpeg|jpg|png|gif|webp|bmp/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    console.log('🔍 Validation:', { 
+      extname, 
+      mimetype,
+      extension: path.extname(file.originalname).toLowerCase(),
+      mimeType: file.mimetype
+    });
+    
+    if (mimetype && extname) {
+      console.log('✅ File accepted:', file.originalname);
+      return cb(null, true);
+    } else {
+      console.log('❌ File rejected - Only image files allowed');
+      console.log('   Allowed formats: JPEG, JPG, PNG, GIF, WEBP, BMP');
+      cb(new Error('Only image files (JPEG, JPG, PNG, GIF, WEBP, BMP) are allowed!'));
+    }
+  }
+});
 
 // @route   GET /api/products
 // @desc    Get all products (with optional filters)
@@ -196,19 +150,13 @@ router.post('/', (req, res, next) => {
       });
     }
     
-    // Get uploaded image paths or URLs
+    // Get uploaded image paths
     const images = req.files ? req.files.map(file => {
-      if (useCloudinary) {
-        // Cloudinary returns the full URL in file.path
-        console.log('☁️  Cloudinary upload:', file.path);
-        return file.path;
-      } else {
-        // Local storage - return relative path
-        console.log('📸 Local upload:', file.filename, `(${(file.size / 1024).toFixed(2)} KB)`);
-        return `/uploads/products/${file.filename}`;
-      }
+      console.log('📸 Processing file:', file.filename, `(${(file.size / 1024).toFixed(2)} KB)`);
+      return `/uploads/products/${file.filename}`;
     }) : [];
     
+    console.log('📸 Total images to save:', images.length);
     // Add image URLs if provided (NEW FEATURE)
     if (req.body.imageUrls) {
       const imageUrls = Array.isArray(req.body.imageUrls) ? req.body.imageUrls : [req.body.imageUrls];
@@ -220,8 +168,7 @@ router.post('/', (req, res, next) => {
       });
     }
     
-    console.log('📸 Total images to save:', images.length);
-    console.log('🖼️  Image paths:', images);
+    console.log('�️  Image paths:', images);
 
     const product = new Product({
       title,
@@ -303,27 +250,11 @@ router.put('/:id', (req, res, next) => {
     // Add new uploaded images
     if (req.files && req.files.length > 0) {
       const newImages = req.files.map(file => {
-        if (useCloudinary) {
-          console.log('☁️  Cloudinary upload:', file.path);
-          return file.path;
-        } else {
-          console.log('📸 New file uploaded:', file.filename, `(${(file.size / 1024).toFixed(2)} KB)`);
-          return `/uploads/products/${file.filename}`;
-        }
+        console.log('📸 New file uploaded:', file.filename, `(${(file.size / 1024).toFixed(2)} KB)`);
+        return `/uploads/products/${file.filename}`;
       });
       images = [...images, ...newImages];
       console.log('✅ Added', newImages.length, 'new images');
-    }
-    
-    // Add image URLs if provided (NEW FEATURE)
-    if (req.body.imageUrls) {
-      const imageUrls = Array.isArray(req.body.imageUrls) ? req.body.imageUrls : [req.body.imageUrls];
-      imageUrls.forEach(url => {
-        if (url && url.trim()) {
-          console.log('🔗 Adding image URL:', url);
-          images.push(url.trim());
-        }
-      });
     }
     
     console.log('🎯 Final images count:', images.length);
@@ -337,6 +268,17 @@ router.put('/:id', (req, res, next) => {
     product.images = images.length > 0 ? images : product.images;
     product.featured = featured === 'true' || featured === true;
     product.inStock = inStock !== 'false' && inStock !== false;
+    // Add image URLs if provided (NEW FEATURE)
+    if (req.body.imageUrls) {
+      const imageUrls = Array.isArray(req.body.imageUrls) ? req.body.imageUrls : [req.body.imageUrls];
+      imageUrls.forEach(url => {
+        if (url && url.trim()) {
+          console.log('🔗 Adding image URL:', url);
+          images.push(url.trim());
+        }
+      });
+    }
+    
 
     await product.save();
     console.log('✅ Product updated successfully with ID:', product._id);
@@ -369,8 +311,8 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    // Delete associated image files (only for local storage)
-    if (!useCloudinary && product.images && product.images.length > 0) {
+    // Delete associated image files
+    if (product.images && product.images.length > 0) {
       product.images.forEach(imagePath => {
         const fullPath = path.join(__dirname, '..', imagePath);
         if (fs.existsSync(fullPath)) {

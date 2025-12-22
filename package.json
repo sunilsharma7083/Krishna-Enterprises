@@ -10,18 +10,29 @@
     "seed-admin": "node backend/seedAdmin.js",
     "install-all": "npm install && cd frontend && npm install"
   },
-  "keywords": ["trophy", "ecommerce", "krishna-enterprises"],
+  "keywords": [
+    "trophy",
+    "ecommerce",
+    "krishna-enterprises"
+  ],
   "author": "Yogesh Sharma - Krishna Enterprises",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^8.0.3",
+    "axios": "^1.13.2",
+    "axios-cookiejar-support": "^6.0.5",
     "bcryptjs": "^2.4.3",
-    "express-session": "^1.17.3",
-    "dotenv": "^16.3.1",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "form-data": "^4.0.5",
+    "json2csv": "^6.0.0-alpha.2",
+    "mongoose": "^8.0.3",
     "multer": "^1.4.5-lts.1",
-    "json2csv": "^6.0.0-alpha.2"
+    "multer-storage-cloudinary": "^4.0.0",
+    "node-fetch": "^2.7.0",
+    "tough-cookie": "^6.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
