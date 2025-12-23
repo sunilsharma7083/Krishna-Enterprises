@@ -8,6 +8,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -15,12 +16,27 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 /* Prevent horizontal scroll */
 html, body {
   max-width: 100%;
   overflow-x: hidden;
+  height: 100%;
+}
+
+/* Better touch targets for mobile */
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Minimum touch target size */
+button, a {
+  min-height: 44px;
+  min-width: 44px;
 }
 
 /* Container responsive padding */
@@ -85,11 +101,62 @@ p {
 #mobile-menu {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  background-color: #1a1a2e;
+  margin-top: 0.5rem;
 }
 
 #mobile-menu.active {
-  max-height: 500px;
+  max-height: 600px;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile menu links styling */
+.mobile-menu-link {
+  padding: 0.75rem 1rem;
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-link:active,
+.mobile-menu-link:focus {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  padding-left: 1.5rem;
+}
+
+/* Mobile menu button */
+#mobile-menu-btn {
+  display: block;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  z-index: 1001;
+}
+
+#mobile-menu-btn:hover,
+#mobile-menu-btn:active,
+#mobile-menu-btn:focus {
+  color: #ffc107;
+  transform: scale(1.1);
+  outline: none;
+}
+
+#mobile-menu-btn i {
+  pointer-events: none;
 }
 
 /* Desktop menu - hidden on mobile */

@@ -126,6 +126,35 @@ function closeMobileMenu() {
   }
 }
 
+// Toggle mobile menu
+function toggleMobileMenu() {
+  console.log('🔄 Toggling mobile menu');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  
+  if (mobileMenu) {
+    const isActive = mobileMenu.classList.contains('active');
+    
+    if (isActive) {
+      mobileMenu.classList.remove('active');
+      console.log('✅ Menu closed');
+    } else {
+      mobileMenu.classList.add('active');
+      console.log('✅ Menu opened');
+    }
+    
+    // Update icon
+    if (menuBtn) {
+      const icon = menuBtn.querySelector('i');
+      if (icon) {
+        icon.className = isActive ? 'fas fa-bars' : 'fas fa-times';
+      }
+    }
+  } else {
+    console.error('❌ Mobile menu element not found!');
+  }
+}
+
 // Setup mobile menu toggle
 function setupMobileMenu() {
   console.log('🔧 Setting up mobile menu...');
@@ -136,17 +165,22 @@ function setupMobileMenu() {
   console.log('📱 Mobile Menu:', mobileMenu);
   
   if (menuBtn && mobileMenu) {
-    // Direct event listener without cloning
-    menuBtn.onclick = function(e) {
+    // Clear existing listeners by cloning
+    const newMenuBtn = menuBtn.cloneNode(true);
+    menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+    
+    // Direct click event
+    newMenuBtn.onclick = function(e) {
       e.preventDefault();
       e.stopPropagation();
       console.log('🔘 Menu button clicked!');
       toggleMobileMenu();
     };
     
-    // Also add touch event for mobile devices
-    menuBtn.addEventListener('touchstart', (e) => {
+    // Touch event for mobile devices with better support
+    newMenuBtn.addEventListener('touchend', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       console.log('👆 Menu button touched!');
       toggleMobileMenu();
     }, { passive: false });
@@ -159,6 +193,14 @@ function setupMobileMenu() {
       link.addEventListener('click', (e) => {
         console.log('🔗 Link clicked:', link.textContent);
         // Let the hash navigation happen, then close menu
+        setTimeout(() => {
+          closeMobileMenu();
+        }, 100);
+      });
+      
+      // Touch support for links
+      link.addEventListener('touchend', (e) => {
+        console.log('👆 Link touched:', link.textContent);
         setTimeout(() => {
           closeMobileMenu();
         }, 100);
@@ -178,6 +220,10 @@ function setupMobileMenu() {
     });
     
     console.log('✅ Mobile menu setup complete');
+  } else {
+    console.error('❌ Menu button or mobile menu not found');
+  }
+}
   } else {
     console.error('❌ Mobile menu elements not found!');
   }

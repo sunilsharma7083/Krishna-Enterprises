@@ -12,31 +12,75 @@
     const mobileMenu = document.getElementById('mobile-menu');
     
     if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        mobileMenu.classList.toggle('hidden');
+      console.log('📱 Initializing mobile menu...');
+      
+      // Remove any existing event listeners by cloning
+      const newMenuBtn = mobileMenuBtn.cloneNode(true);
+      mobileMenuBtn.parentNode.replaceChild(newMenuBtn, mobileMenuBtn);
+      
+      // Toggle menu function
+      const toggleMenu = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const isActive = mobileMenu.classList.contains('active');
+        console.log('🔘 Menu toggle clicked. Currently active:', isActive);
+        
+        if (isActive) {
+          mobileMenu.classList.remove('active');
+          console.log('✅ Menu closed');
+        } else {
+          mobileMenu.classList.add('active');
+          console.log('✅ Menu opened');
+        }
         
         // Change icon
-        const icon = mobileMenuBtn.querySelector('i');
+        const icon = newMenuBtn.querySelector('i');
         if (icon) {
-          if (mobileMenu.classList.contains('hidden')) {
-            icon.className = 'fas fa-bars';
-          } else {
-            icon.className = 'fas fa-times';
-          }
+          icon.className = isActive ? 'fas fa-bars' : 'fas fa-times';
+        }
+      };
+      
+      // Add click event
+      newMenuBtn.addEventListener('click', toggleMenu);
+      
+      // Add touch event for better mobile support
+      newMenuBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        toggleMenu(e);
+      }, { passive: false });
+      
+      // Close mobile menu when clicking on links
+      const mobileLinks = mobileMenu.querySelectorAll('a, button');
+      console.log('📋 Found', mobileLinks.length, 'clickable items in mobile menu');
+      
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          console.log('🔗 Menu item clicked:', link.textContent.trim());
+          setTimeout(() => {
+            mobileMenu.classList.remove('active');
+            const icon = newMenuBtn.querySelector('i');
+            if (icon) icon.className = 'fas fa-bars';
+          }, 100);
+        });
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        const isClickInsideMenu = mobileMenu.contains(e.target);
+        const isClickOnButton = newMenuBtn.contains(e.target);
+        
+        if (!isClickInsideMenu && !isClickOnButton && mobileMenu.classList.contains('active')) {
+          console.log('🚪 Closing menu - clicked outside');
+          mobileMenu.classList.remove('active');
+          const icon = newMenuBtn.querySelector('i');
+          if (icon) icon.className = 'fas fa-bars';
         }
       });
       
-      // Close mobile menu when clicking on links
-      const mobileLinks = mobileMenu.querySelectorAll('a');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.add('hidden');
-          mobileMenu.classList.remove('active');
-          const icon = mobileMenuBtn.querySelector('i');
-          if (icon) icon.className = 'fas fa-bars';
-        });
-      });
+      console.log('✅ Mobile menu initialized successfully');
+    } else {
+      console.warn('⚠️ Mobile menu button or menu not found');
     }
   };
 
