@@ -106,35 +106,8 @@ cd Krishana_Expresis
 npm install
 ```
 
-### Step 2: Configure Environment Variables
 
-The `.env` file is already created. Update if needed:
 
-```env
-# Server Configuration
-PORT=3000
-NODE_ENV=development
-
-# MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017/krishna-enterprises
-# For MongoDB Atlas (cloud), use:
-# MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/krishna-enterprises
-
-# Admin Credentials
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=krishna@123
-
-# Session Secret (CHANGE THIS IN PRODUCTION!)
-SESSION_SECRET=krishna-enterprises-secret-key-2025
-
-# Business Information
-BUSINESS_NAME=Krishna Enterprises
-BUSINESS_OWNER=Yogesh Sharma
-BUSINESS_ADDRESS=A-90, Shri Govind Nagar 1st Extension, Niwaru Road, Jhotwara, Jaipur, Rajasthan 302013, India
-BUSINESS_PHONE=+919000090000
-BUSINESS_WHATSAPP=919000090000
-BUSINESS_EMAIL=sales@krishnaenterprises.info
-```
 
 ### Step 3: Set Up MongoDB
 
@@ -199,7 +172,7 @@ The application will start on **http://localhost:3000**
 1. **Login**
    - Visit `http://localhost:3000/admin`
    - Username: `admin`
-   - Password: `krishna@123`
+
 
 2. **Dashboard**
    - View total orders, revenue, and statistics
